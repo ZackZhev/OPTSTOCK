@@ -1,0 +1,811 @@
+/* ============================================
+   OPT STOCK - Премиум Косметика
+   Файл стилей CSS
+   ============================================ */
+
+/* === БАЗОВЫЕ СТИЛИ === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-pink: #FFB6C1;
+    --primary-rose: #FFC0CB;
+    --light-pink: #FFE4E1;
+    --text-dark: #2C2C2C;
+    --text-light: #8B8B8B;
+    --bg-white: #FFFFFF;
+    --bg-light: #FFF5F7;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--bg-light);
+    min-height: 100vh;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* === ДЕКОРАТИВНЫЕ ЭЛЕМЕНТЫ ФОНА === */
+.bg-decoration {
+    position: fixed;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.bg-circle-1 {
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(255, 107, 157, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    top: -200px;
+    right: -200px;
+    animation: float 20s ease-in-out infinite;
+}
+
+.bg-circle-2 {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(192, 108, 132, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    bottom: -150px;
+    left: -150px;
+    animation: float 25s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
+}
+
+/* === ПАДАЮЩИЕ СЕРДЕЧКИ === */
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.heart {
+    position: absolute;
+    font-size: 30px;
+    opacity: 0;
+    animation: fall linear infinite;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px rgba(255, 192, 203, 1)) drop-shadow(0 0 15px rgba(255, 107, 157, 0.6));
+    z-index: 5;
+    will-change: transform, opacity;
+}
+
+@keyframes fall {
+    0% {
+        top: -10%;
+        opacity: 0;
+        transform: scale(0.8) rotate(0deg);
+    }
+    10% {
+        opacity: 1;
+        transform: scale(1.1) rotate(15deg);
+    }
+    50% {
+        opacity: 0.95;
+        transform: scale(1) rotate(-10deg);
+    }
+    90% {
+        opacity: 0.9;
+        transform: scale(0.95) rotate(5deg);
+    }
+    100% {
+        top: 110%;
+        opacity: 0;
+        transform: scale(0.8) rotate(20deg);
+    }
+}
+
+@keyframes sway {
+    0%, 100% {
+        transform: translateX(0) rotate(0deg);
+    }
+    25% {
+        transform: translateX(20px) rotate(5deg);
+    }
+    50% {
+        transform: translateX(0) rotate(0deg);
+    }
+    75% {
+        transform: translateX(-20px) rotate(-5deg);
+    }
+}
+
+/* === КОНТЕЙНЕР === */
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* === СЕКЦИЯ HERO === */
+.hero-section {
+    background: white;
+    border-radius: 30px;
+    padding: 60px 40px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeInDown 1s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Декоративные элементы в хедере */
+.hero-decoration {
+    position: absolute;
+    font-size: 60px;
+    opacity: 0.1;
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+.deco-1 { top: 20px; left: 40px; animation: rotate 20s linear infinite; }
+.deco-2 { top: 40px; right: 60px; animation: rotate 15s linear infinite reverse; }
+.deco-3 { bottom: 30px; left: 80px; animation: rotate 25s linear infinite; }
+.deco-4 { bottom: 50px; right: 40px; animation: rotate 18s linear infinite reverse; }
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* === ЛОГОТИП === */
+.logo-container {
+    width: 160px;
+    height: 160px;
+    margin: 0 auto 35px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 2;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid var(--light-pink);
+}
+
+.logo-container:hover {
+    transform: scale(1.08) rotate(5deg);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+.logo-container::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+    border-radius: 50%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.logo-container:hover::before {
+    opacity: 0.3;
+    animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.1); opacity: 0.5; }
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 68px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -3px;
+    position: relative;
+}
+
+.logo-sparkle {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    font-size: 28px;
+    filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.6));
+    animation: sparkle 3s ease infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+}
+
+/* === ЗАГОЛОВКИ === */
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #8B4789 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 20px rgba(255, 107, 157, 0.2);
+}
+
+.subtitle {
+    font-size: 20px;
+    color: var(--text-light);
+    margin-bottom: 25px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    position: relative;
+    z-index: 2;
+}
+
+.subtitle strong {
+    color: var(--primary-pink);
+    font-weight: 700;
+}
+
+.hours {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, rgba(255, 107, 157, 0.15) 0%, rgba(192, 108, 132, 0.15) 100%);
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    border: 2px solid rgba(255, 107, 157, 0.2);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.1);
+}
+
+.hours::before {
+    content: '⏰';
+    font-size: 20px;
+    animation: swing 2s ease infinite;
+}
+
+@keyframes swing {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+}
+
+/* === СЕКЦИЯ С КНОПКАМИ === */
+.action-section {
+    background: white;
+    border-radius: 30px;
+    padding: 45px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* === КНОПКИ === */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 22px 35px;
+    border: none;
+    border-radius: 20px;
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    transform: translateY(-2px) scale(0.98);
+}
+
+.btn-icon {
+    font-size: 26px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    transition: transform 0.4s ease;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
+}
+
+.btn:hover .btn-icon {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.btn-text {
+    z-index: 1;
+}
+
+/* Цвета кнопок */
+.btn-whatsapp {
+    background: #25D366;
+}
+
+.btn-instagram {
+    background: linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #F56040 100%);
+}
+
+.btn-2gis {
+    background: #00CA74;
+}
+
+.btn-tiktok {
+    background: #000000;
+}
+
+.btn-loyalty {
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+}
+
+.btn-empty {
+    background: var(--primary-pink);
+    border: 2px solid var(--primary-rose);
+}
+
+/* === КАТАЛОГ === */
+.catalog-section {
+    background: white;
+    border-radius: 30px;
+    padding: 50px 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 30px;
+    animation: fadeInUp 1s ease 0.4s both;
+}
+
+.catalog-header {
+    text-align: center;
+    margin-bottom: 45px;
+}
+
+.catalog-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 15px;
+}
+
+.catalog-subtitle {
+    font-size: 17px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* === КАРУСЕЛЬ ТОВАРОВ === */
+.catalog-carousel {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.products-carousel-wrapper {
+    overflow: hidden;
+    flex: 1;
+    max-width: calc(100% - 130px);
+}
+
+.products-grid {
+    display: flex;
+    gap: 25px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-btn {
+    flex-shrink: 0;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-btn:hover:not(:disabled) {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5);
+}
+
+.carousel-btn:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.carousel-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-btn svg {
+    fill: white;
+    width: 28px;
+    height: 28px;
+}
+
+/* === КАРТОЧКИ ТОВАРОВ === */
+.product-card {
+    background: white;
+    border-radius: 25px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    border: 2px solid rgba(255, 107, 157, 0.1);
+    position: relative;
+    overflow: hidden;
+    min-width: 220px;
+    flex-shrink: 0;
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-pink), var(--primary-purple));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.product-card:hover::before {
+    transform: scaleX(1);
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(255, 107, 157, 0.2);
+    border-color: var(--primary-pink);
+}
+
+.product-icon {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 20px;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 70px;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.product-card:hover .product-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.product-icon::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 23px;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.product-card:hover .product-icon::after {
+    opacity: 1;
+}
+
+/* Градиенты для категорий */
+.product-card:nth-child(1) .product-icon {
+    background: linear-gradient(135deg, #FFE5E5 0%, #FFC9C9 100%);
+}
+
+.product-card:nth-child(2) .product-icon {
+    background: linear-gradient(135deg, #FFE8F5 0%, #FFD1E8 100%);
+}
+
+.product-card:nth-child(3) .product-icon {
+    background: linear-gradient(135deg, #FFF0E5 0%, #FFE0C9 100%);
+}
+
+.product-card:nth-child(4) .product-icon {
+    background: linear-gradient(135deg, #F5E5FF 0%, #E8C9FF 100%);
+}
+
+.product-card:nth-child(5) .product-icon {
+    background: linear-gradient(135deg, #E5F5FF 0%, #C9E8FF 100%);
+}
+
+.product-card:nth-child(6) .product-icon {
+    background: linear-gradient(135deg, #FFF8E5 0%, #FFEDC9 100%);
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 8px;
+}
+
+.product-description {
+    font-size: 13px;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* === СОЦИАЛЬНЫЕ СЕТИ === */
+.social-section {
+    background: white;
+    border-radius: 30px;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 1s ease 0.6s both;
+}
+
+.social-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.social-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.4s ease;
+}
+
+.social-link:hover::before {
+    transform: scale(1);
+}
+
+.social-link:hover {
+    transform: translateY(-8px) scale(1.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.social-link {
+    background: white;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.social-link svg {
+    z-index: 1;
+}
+
+.social-instagram svg {
+    fill: #E1306C;
+}
+
+.social-tiktok svg {
+    fill: #000000;
+}
+
+.social-whatsapp svg {
+    fill: #25D366;
+}
+
+.social-2gis svg {
+    fill: #00CA74;
+}
+
+/* === АДАПТИВНЫЙ ДИЗАЙН === */
+@media (max-width: 768px) {
+    .container {
+        margin: 20px;
+    }
+
+    .hero-section,
+    .action-section,
+    .catalog-section,
+    .social-section {
+        border-radius: 30px;
+        padding: 40px 25px;
+    }
+
+    h1 {
+        font-size: 40px;
+    }
+
+    .logo-container {
+        width: 130px;
+        height: 130px;
+    }
+
+    .logo-text {
+        font-size: 54px;
+    }
+
+    .catalog-title {
+        font-size: 32px;
+    }
+
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+
+    .btn {
+        padding: 18px 25px;
+        font-size: 15px;
+    }
+
+    .hero-decoration {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    .subtitle {
+        font-size: 16px;
+    }
+
+    .catalog-title {
+        font-size: 26px;
+    }
+
+    .product-icon {
+        width: 100px;
+        height: 100px;
+        font-size: 50px;
+    }
+
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    .carousel-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .product-card {
+        min-width: 180px;
+    }
+
+    .social-link {
+        width: 65px;
+        height: 65px;
+        font-size: 28px;
+    }
+}
+
+/* === АНИМАЦИЯ RIPPLE === */
+@keyframes ripple {
+    to {
+        transform: scale(2);
+        opacity: 0;
+    }
+}

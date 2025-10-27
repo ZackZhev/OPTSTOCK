@@ -196,33 +196,9 @@ body {
 }
 
 .logo-container:hover {
-    transform: scale(1.08) rotate(5deg);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
 }
 
-.logo-container::before {
-    content: '';
-    position: absolute;
-    top: -5px;
-    left: -5px;
-    right: -5px;
-    bottom: -5px;
-    background: linear-gradient(135deg, var(--primary-black), var(--secondary-gray));
-    border-radius: 50%;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.logo-container:hover::before {
-    opacity: 0.3;
-    animation: pulse 2s ease infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.3; }
-    50% { transform: scale(1.1); opacity: 0.5; }
-}
 
 .logo-text {
     font-family: 'Playfair Display', serif;

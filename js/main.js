@@ -384,11 +384,38 @@ function loadProductsFromDatabase() {
         productCard.className = 'product-card';
         productCard.setAttribute('data-category', product.category);
 
+        // Генерируем подробное описание на основе категории
+        const detailedDescriptions = {
+            makeup: 'Широкий ассортимент помад, теней для век, туши для ресниц, румян и хайлайтеров. Все продукты сертифицированы и протестированы дерматологами.',
+            skincare: 'Профессиональные кремы, сыворотки и маски для лица. Подходят для всех типов кожи. Натуральные компоненты и инновационные формулы.',
+            cleansing: 'Мицеллярная вода, пенки, гели и тоники для умывания. Бережно очищают кожу, не нарушая её естественный баланс.',
+            nails: 'Лаки для ногтей, базовые и топовые покрытия, средства для укрепления ногтей. Стойкие формулы и яркие цвета.',
+            perfume: 'Изысканные ароматы от мировых брендов. Духи, туалетная вода, одеколоны и парфюмированные дезодоранты.',
+            haircare: 'Профессиональные шампуни, кондиционеры, маски и сыворотки для волос. Восстановление, питание и защита волос.'
+        };
+
+        const badges = {
+            makeup: 'Оптом и в розницу',
+            skincare: 'Премиум качество',
+            cleansing: 'Для всех типов кожи',
+            nails: 'Профессиональная линия',
+            perfume: 'Оригинальная продукция',
+            haircare: 'Салонный уход дома'
+        };
+
+        const detailedDescription = detailedDescriptions[product.category] || product.description;
+        const badge = badges[product.category] || 'Премиум качество';
+
         productCard.innerHTML = `
             <div class="product-icon">${product.icon}</div>
             <div class="product-name">${product.name}</div>
             <div class="product-description">${product.description}</div>
             ${product.price > 0 ? `<div class="product-price">${product.price} сом</div>` : ''}
+            <div class="product-details">
+                <h4>${product.name}</h4>
+                <p>${detailedDescription}</p>
+                <span class="details-badge">${badge}</span>
+            </div>
         `;
 
         // Добавляем обработчик клика

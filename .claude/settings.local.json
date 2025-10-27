@@ -3,7 +3,13 @@
     "allow": [
       "Bash(npx http-server:*)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nAdd: Horizontal carousel with navigation arrows and progress indicators\n\n- Implemented smooth horizontal scroll for product cards\n- Added navigation buttons (prev/next) with hover effects  \n- Added progress indicators (dots) below carousel\n- Added keyboard navigation support (arrow keys)\n- Added mouse drag & drop functionality\n- Added touch swipe support for mobile devices\n- Added auto-scroll feature (disabled by default)\n- Improved carousel animations with cubic-bezier\n- Made carousel fully responsive for all screen sizes\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd: Horizontal carousel with navigation arrows and progress indicators\n\n- Implemented smooth horizontal scroll for product cards\n- Added navigation buttons (prev/next) with hover effects  \n- Added progress indicators (dots) below carousel\n- Added keyboard navigation support (arrow keys)\n- Added mouse drag & drop functionality\n- Added touch swipe support for mobile devices\n- Added auto-scroll feature (disabled by default)\n- Improved carousel animations with cubic-bezier\n- Made carousel fully responsive for all screen sizes\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(render:*)",
+      "Bash(curl:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(taskkill:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []

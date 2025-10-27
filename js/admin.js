@@ -3,17 +3,17 @@
  * JavaScript функционал для управления
  */
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Проверка DataManager
-    if (!window.DataManager) {
-        console.error('DataManager не загружен!');
+document.addEventListener('DOMContentLoaded', async function() {
+    // Проверка AdminAPI
+    if (!window.AdminAPI) {
+        console.error('AdminAPI не загружен!');
         return;
     }
 
-    console.log('DataManager загружен успешно');
+    console.log('AdminAPI загружен успешно');
 
     // Проверка авторизации
-    checkAuth();
+    await checkAuth();
 
     // Обработчик формы входа
     const loginForm = document.getElementById('loginForm');
@@ -33,40 +33,41 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация модального окна товаров
     initProductModal();
 
-    // Загрузка данных
-    if (DataManager && DataManager.isLoggedIn()) {
-        loadDashboard();
-        loadProducts();
-        loadOrders();
-        loadSettings();
-    }
-
     console.log('🔐 Админ панель загружена');
 });
 
 // ==========================================
 // АВТОРИЗАЦИЯ
 // ==========================================
-function checkAuth() {
+async function checkAuth() {
     const loginPage = document.getElementById('loginPage');
     const adminPanel = document.getElementById('adminPanel');
 
-    if (!DataManager) {
-        console.error('DataManager не загружен');
-        return;
-    }
+    try {
+        const result = await AdminAPI.checkAuth();
 
-    if (DataManager.isLoggedIn()) {
-        if (loginPage) loginPage.style.display = 'none';
-        if (adminPanel) adminPanel.style.display = 'flex';
-        updateCurrentUser();
-    } else {
+        if (result.authenticated) {
+            if (loginPage) loginPage.style.display = 'none';
+            if (adminPanel) adminPanel.style.display = 'flex';
+            updateCurrentUser(result.username);
+
+            // Загрузка данных после успешной авторизации
+            await loadDashboard();
+            await loadProducts();
+            await loadOrders();
+            await loadSettings();
+        } else {
+            if (loginPage) loginPage.style.display = 'flex';
+            if (adminPanel) adminPanel.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Ошибка проверки авторизации:', error);
         if (loginPage) loginPage.style.display = 'flex';
         if (adminPanel) adminPanel.style.display = 'none';
     }
 }
 
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -74,31 +75,40 @@ function handleLogin(e) {
 
     console.log('Попытка входа:', username);
 
-    // Проверка наличия auth данных
-    const authData = DataManager.getData(DataManager.KEYS.AUTH);
-    console.log('Auth данные:', authData);
+    try {
+        const result = await AdminAPI.login(username, password);
 
-    if (DataManager.login(username, password)) {
-        console.log('Вход успешен');
-        window.location.reload();
-    } else {
-        console.log('Неверные учетные данные');
-        errorDiv.textContent = 'Неверный логин или пароль. Попробуйте: admin / admin123';
+        if (result.success) {
+            console.log('Вход успешен');
+            window.location.reload();
+        } else {
+            console.log('Неверные учетные данные');
+            errorDiv.textContent = 'Неверный логин или пароль. Попробуйте: OPT2027 / POPT2027';
+            errorDiv.style.display = 'block';
+        }
+    } catch (error) {
+        console.error('Ошибка входа:', error);
+        errorDiv.textContent = 'Ошибка сервера. Проверьте подключение.';
         errorDiv.style.display = 'block';
     }
 }
 
-function handleLogout() {
+async function handleLogout() {
     if (confirm('Вы уверены, что хотите выйти?')) {
-        DataManager.logout();
-        window.location.reload();
+        try {
+            await AdminAPI.logout();
+            window.location.reload();
+        } catch (error) {
+            console.error('Ошибка выхода:', error);
+            window.location.reload();
+        }
     }
 }
 
-function updateCurrentUser() {
+function updateCurrentUser(username) {
     const userSpan = document.getElementById('currentUser');
     if (userSpan) {
-        userSpan.textContent = DataManager.getCurrentUser();
+        userSpan.textContent = username || 'Admin';
     }
 }
 
@@ -143,41 +153,55 @@ function switchTab(tabName) {
 // ==========================================
 // DASHBOARD
 // ==========================================
-function loadDashboard() {
-    const stats = DataManager.getStats();
+async function loadDashboard() {
+    try {
+        const stats = await AdminAPI.getStats();
 
-    document.getElementById('totalProducts').textContent = stats.totalProducts;
-    document.getElementById('totalOrders').textContent = stats.totalOrders;
-    document.getElementById('totalVisitors').textContent = stats.totalVisitors;
-    document.getElementById('conversionRate').textContent = stats.conversionRate + '%';
+        document.getElementById('totalProducts').textContent = stats.totalProducts || 0;
+        document.getElementById('totalOrders').textContent = stats.totalOrders || 0;
+        document.getElementById('totalVisitors').textContent = stats.totalVisitors || 0;
+        document.getElementById('conversionRate').textContent = (stats.conversionRate || 0) + '%';
 
-    // Загрузка последних заказов
-    loadRecentOrders();
+        // Загрузка последних заказов
+        await loadRecentOrders();
+    } catch (error) {
+        console.error('Ошибка загрузки панели:', error);
+    }
 }
 
-function loadRecentOrders() {
-    const orders = DataManager.getOrders().slice(0, 5);
-    const ordersList = document.getElementById('recentOrdersList');
+async function loadRecentOrders() {
+    try {
+        const allOrders = await AdminAPI.getOrders();
+        const orders = allOrders.slice(0, 5);
+        const ordersList = document.getElementById('recentOrdersList');
 
-    if (!ordersList) return;
+        if (!ordersList) return;
 
-    ordersList.innerHTML = '';
+        ordersList.innerHTML = '';
 
-    orders.forEach(order => {
-        const orderDiv = document.createElement('div');
-        orderDiv.className = 'order-item';
-        orderDiv.innerHTML = `
-            <div>
-                <strong>${order.customerName}</strong>
-                <p>${order.products.join(', ')}</p>
-            </div>
-            <div>
-                <span class="order-status status-${order.status}">${getStatusText(order.status)}</span>
-                <p>${order.total} сом</p>
-            </div>
-        `;
-        ordersList.appendChild(orderDiv);
-    });
+        if (orders.length === 0) {
+            ordersList.innerHTML = '<p style="text-align: center; color: #666;">Нет заказов</p>';
+            return;
+        }
+
+        orders.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order-item';
+            orderDiv.innerHTML = `
+                <div>
+                    <strong>${order.customerName}</strong>
+                    <p>${order.products.join(', ')}</p>
+                </div>
+                <div>
+                    <span class="order-status status-${order.status}">${getStatusText(order.status)}</span>
+                    <p>${order.total} сом</p>
+                </div>
+            `;
+            ordersList.appendChild(orderDiv);
+        });
+    } catch (error) {
+        console.error('Ошибка загрузки заказов:', error);
+    }
 }
 
 function getStatusText(status) {
@@ -192,87 +216,109 @@ function getStatusText(status) {
 // ==========================================
 // ТОВАРЫ
 // ==========================================
-function loadProducts() {
-    const products = DataManager.getProducts();
-    const productsList = document.getElementById('productsList');
+async function loadProducts() {
+    try {
+        const products = await AdminAPI.getProducts();
+        const productsList = document.getElementById('productsList');
 
-    if (!productsList) return;
+        if (!productsList) return;
 
-    productsList.innerHTML = '';
+        productsList.innerHTML = '';
 
-    products.forEach(product => {
-        const productDiv = document.createElement('div');
-        productDiv.className = 'product-card';
-        productDiv.innerHTML = `
-            <div class="product-info">
-                <div class="product-icon-display">${product.icon}</div>
-                <div>
-                    <h4>${product.name}</h4>
-                    <p>${product.description}</p>
-                    ${product.price > 0 ? `<strong>${product.price} сом</strong>` : ''}
+        if (products.length === 0) {
+            productsList.innerHTML = '<p style="text-align: center; color: #666;">Нет товаров. Добавьте первый товар!</p>';
+            return;
+        }
+
+        products.forEach(product => {
+            const productDiv = document.createElement('div');
+            productDiv.className = 'product-card';
+            productDiv.innerHTML = `
+                <div class="product-info">
+                    <div class="product-icon-display">${product.icon}</div>
+                    <div>
+                        <h4>${product.name}</h4>
+                        <p>${product.description}</p>
+                        ${product.price > 0 ? `<strong>${product.price} сом</strong>` : ''}
+                    </div>
                 </div>
-            </div>
-            <div class="product-actions">
-                <button class="btn-edit" onclick="editProduct('${product.id}')">✏️ Изменить</button>
-                <button class="btn-delete" onclick="deleteProduct('${product.id}')">🗑️ Удалить</button>
-            </div>
-        `;
-        productsList.appendChild(productDiv);
-    });
+                <div class="product-actions">
+                    <button class="btn-edit" onclick="editProduct('${product.id}')">✏️ Изменить</button>
+                    <button class="btn-delete" onclick="deleteProduct('${product.id}')">🗑️ Удалить</button>
+                </div>
+            `;
+            productsList.appendChild(productDiv);
+        });
+    } catch (error) {
+        console.error('Ошибка загрузки товаров:', error);
+    }
 }
 
 // ==========================================
 // ЗАКАЗЫ
 // ==========================================
-function loadOrders() {
-    const orders = DataManager.getOrders();
-    const ordersList = document.getElementById('ordersList');
+async function loadOrders() {
+    try {
+        const orders = await AdminAPI.getOrders();
+        const ordersList = document.getElementById('ordersList');
 
-    if (!ordersList) return;
+        if (!ordersList) return;
 
-    ordersList.innerHTML = '';
+        ordersList.innerHTML = '';
 
-    orders.forEach(order => {
-        const orderDiv = document.createElement('div');
-        orderDiv.className = 'order-item';
-        orderDiv.innerHTML = `
-            <div class="order-header">
-                <span class="order-number">Заказ #${order.id.slice(0, 8)}</span>
-                <span class="order-status ${order.status}">${getStatusText(order.status)}</span>
-            </div>
-            <p><strong>Клиент:</strong> ${order.customerName} (${order.customerPhone})</p>
-            <p><strong>Товары:</strong> ${order.products.join(', ')}</p>
-            <p><strong>Сумма:</strong> ${order.total} сом</p>
-            <p><strong>Дата:</strong> ${new Date(order.createdAt).toLocaleString('ru-RU')}</p>
-        `;
-        ordersList.appendChild(orderDiv);
-    });
+        if (orders.length === 0) {
+            ordersList.innerHTML = '<p style="text-align: center; color: #666;">Нет заказов</p>';
+            return;
+        }
+
+        orders.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order-item';
+            orderDiv.innerHTML = `
+                <div class="order-header">
+                    <span class="order-number">Заказ #${order.id.slice(0, 8)}</span>
+                    <span class="order-status ${order.status}">${getStatusText(order.status)}</span>
+                </div>
+                <p><strong>Клиент:</strong> ${order.customerName} (${order.customerPhone})</p>
+                <p><strong>Товары:</strong> ${order.products.join(', ')}</p>
+                <p><strong>Сумма:</strong> ${order.total} сом</p>
+                <p><strong>Дата:</strong> ${new Date(order.createdAt).toLocaleString('ru-RU')}</p>
+            `;
+            ordersList.appendChild(orderDiv);
+        });
+    } catch (error) {
+        console.error('Ошибка загрузки заказов:', error);
+    }
 }
 
 // ==========================================
 // НАСТРОЙКИ
 // ==========================================
-function loadSettings() {
-    const settings = DataManager.getSettings();
+async function loadSettings() {
+    try {
+        const settings = await AdminAPI.getSettings();
 
-    document.getElementById('siteName').value = settings.siteName || '';
-    document.getElementById('siteDescription').value = settings.siteDescription || '';
-    document.getElementById('workingHours').value = settings.workingHours || '';
-    document.getElementById('whatsappNumber').value = settings.whatsappNumber || '';
-    document.getElementById('instagramHandle').value = settings.instagramHandle || '';
-    document.getElementById('tiktokHandle').value = settings.tiktokHandle || '';
-    document.getElementById('dgisLink').value = settings.dgisLink || '';
+        document.getElementById('siteName').value = settings.siteName || '';
+        document.getElementById('siteDescription').value = settings.siteDescription || '';
+        document.getElementById('workingHours').value = settings.workingHours || '';
+        document.getElementById('whatsappNumber').value = settings.whatsappNumber || '';
+        document.getElementById('instagramHandle').value = settings.instagramHandle || '';
+        document.getElementById('tiktokHandle').value = settings.tiktokHandle || '';
+        document.getElementById('dgisLink').value = settings.dgisLink || '';
 
-    // Загрузка настройки сердечек
-    const heartsCheckbox = document.getElementById('heartsEnabled');
-    if (heartsCheckbox) {
-        heartsCheckbox.checked = settings.heartsEnabled !== false;
+        // Загрузка настройки сердечек
+        const heartsCheckbox = document.getElementById('heartsEnabled');
+        if (heartsCheckbox) {
+            heartsCheckbox.checked = settings.heartsEnabled !== false;
+        }
+    } catch (error) {
+        console.error('Ошибка загрузки настроек:', error);
     }
 }
 
 const saveSettingsBtn = document.getElementById('saveSettingsBtn');
 if (saveSettingsBtn) {
-    saveSettingsBtn.addEventListener('click', function() {
+    saveSettingsBtn.addEventListener('click', async function() {
         const settings = {
             siteName: document.getElementById('siteName').value,
             siteDescription: document.getElementById('siteDescription').value,
@@ -284,8 +330,13 @@ if (saveSettingsBtn) {
             heartsEnabled: document.getElementById('heartsEnabled')?.checked ?? true
         };
 
-        DataManager.updateSettings(settings);
-        alert('Настройки сохранены! Обновите главную страницу для применения изменений.');
+        try {
+            await AdminAPI.updateSettings(settings);
+            alert('Настройки сохранены! Обновите главную страницу для применения изменений.');
+        } catch (error) {
+            console.error('Ошибка сохранения настроек:', error);
+            alert('Ошибка сохранения настроек. Проверьте подключение.');
+        }
     });
 }
 
@@ -318,23 +369,29 @@ function initProductModal() {
     });
 }
 
-function openProductModal(productId = null) {
+async function openProductModal(productId = null) {
     const modal = document.getElementById('productModal');
     const modalTitle = document.getElementById('modalTitle');
     const form = document.getElementById('productForm');
 
     if (productId) {
         // Режим редактирования
-        const product = DataManager.getProduct(productId);
-        if (product) {
-            modalTitle.textContent = 'Редактировать товар';
-            document.getElementById('productId').value = product.id;
-            document.getElementById('productName').value = product.name;
-            document.getElementById('productCategory').value = product.category;
-            document.getElementById('productDescription').value = product.description;
-            document.getElementById('productIcon').value = product.icon;
-            document.getElementById('productPrice').value = product.price || '';
-            document.getElementById('productVisible').checked = product.visible !== false;
+        try {
+            const product = await AdminAPI.getProduct(productId);
+            if (product) {
+                modalTitle.textContent = 'Редактировать товар';
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productDescription').value = product.description;
+                document.getElementById('productIcon').value = product.icon;
+                document.getElementById('productPrice').value = product.price || '';
+                document.getElementById('productVisible').checked = product.visible !== false;
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки товара:', error);
+            alert('Ошибка загрузки товара');
+            return;
         }
     } else {
         // Режим добавления
@@ -352,7 +409,7 @@ function closeProductModal() {
     modal.style.display = 'none';
 }
 
-function saveProduct() {
+async function saveProduct() {
     const productId = document.getElementById('productId').value;
     const productData = {
         name: document.getElementById('productName').value,
@@ -368,17 +425,22 @@ function saveProduct() {
         return;
     }
 
-    if (productId) {
-        // Обновление существующего товара
-        DataManager.updateProduct(productId, productData);
-    } else {
-        // Добавление нового товара
-        DataManager.addProduct(productData);
-    }
+    try {
+        if (productId) {
+            // Обновление существующего товара
+            await AdminAPI.updateProduct(productId, productData);
+        } else {
+            // Добавление нового товара
+            await AdminAPI.addProduct(productData);
+        }
 
-    closeProductModal();
-    loadProducts();
-    alert('Товар сохранен!');
+        closeProductModal();
+        await loadProducts();
+        alert('Товар сохранен!');
+    } catch (error) {
+        console.error('Ошибка сохранения товара:', error);
+        alert('Ошибка сохранения товара. Проверьте подключение.');
+    }
 }
 
 // Глобальные функции для кнопок (вызываются через onclick)
@@ -386,11 +448,16 @@ window.editProduct = function(productId) {
     openProductModal(productId);
 };
 
-window.deleteProduct = function(productId) {
+window.deleteProduct = async function(productId) {
     if (confirm('Вы уверены, что хотите удалить этот товар?')) {
-        DataManager.deleteProduct(productId);
-        loadProducts();
-        alert('Товар удален!');
+        try {
+            await AdminAPI.deleteProduct(productId);
+            await loadProducts();
+            alert('Товар удален!');
+        } catch (error) {
+            console.error('Ошибка удаления товара:', error);
+            alert('Ошибка удаления товара. Проверьте подключение.');
+        }
     }
 };
 

@@ -1,0 +1,21 @@
+{
+  "name": "opt-stock",
+  "version": "1.0.0",
+  "description": "OPT STOCK - Premium Cosmetics Website",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server -p 8080",
+    "dev": "npx http-server -p 8080 -o"
+  },
+  "keywords": [
+    "cosmetics",
+    "e-commerce",
+    "premium",
+    "opt-stock"
+  ],
+  "author": "OPT STOCK",
+  "license": "MIT",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}

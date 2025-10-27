@@ -4,6 +4,14 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Проверка DataManager
+    if (!window.DataManager) {
+        console.error('DataManager не загружен!');
+        return;
+    }
+
+    console.log('DataManager загружен успешно');
+
     // Проверка авторизации
     checkAuth();
 
@@ -21,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Навигация по вкладкам
     initTabNavigation();
+
+    // Инициализация модального окна товаров
+    initProductModal();
 
     // Загрузка данных
     if (DataManager && DataManager.isLoggedIn()) {
@@ -61,10 +72,18 @@ function handleLogin(e) {
     const password = document.getElementById('password').value;
     const errorDiv = document.getElementById('loginError');
 
+    console.log('Попытка входа:', username);
+
+    // Проверка наличия auth данных
+    const authData = DataManager.getData(DataManager.KEYS.AUTH);
+    console.log('Auth данные:', authData);
+
     if (DataManager.login(username, password)) {
+        console.log('Вход успешен');
         window.location.reload();
     } else {
-        errorDiv.textContent = 'Неверный логин или пароль';
+        console.log('Неверные учетные данные');
+        errorDiv.textContent = 'Неверный логин или пароль. Попробуйте: admin / admin123';
         errorDiv.style.display = 'block';
     }
 }
@@ -243,6 +262,12 @@ function loadSettings() {
     document.getElementById('instagramHandle').value = settings.instagramHandle || '';
     document.getElementById('tiktokHandle').value = settings.tiktokHandle || '';
     document.getElementById('dgisLink').value = settings.dgisLink || '';
+
+    // Загрузка настройки сердечек
+    const heartsCheckbox = document.getElementById('heartsEnabled');
+    if (heartsCheckbox) {
+        heartsCheckbox.checked = settings.heartsEnabled !== false;
+    }
 }
 
 const saveSettingsBtn = document.getElementById('saveSettingsBtn');
@@ -255,12 +280,118 @@ if (saveSettingsBtn) {
             whatsappNumber: document.getElementById('whatsappNumber').value,
             instagramHandle: document.getElementById('instagramHandle').value,
             tiktokHandle: document.getElementById('tiktokHandle').value,
-            dgisLink: document.getElementById('dgisLink').value
+            dgisLink: document.getElementById('dgisLink').value,
+            heartsEnabled: document.getElementById('heartsEnabled')?.checked ?? true
         };
 
         DataManager.updateSettings(settings);
-        alert('Настройки сохранены!');
+        alert('Настройки сохранены! Обновите главную страницу для применения изменений.');
     });
 }
+
+// ==========================================
+// МОДАЛЬНОЕ ОКНО ТОВАРОВ
+// ==========================================
+function initProductModal() {
+    const modal = document.getElementById('productModal');
+    const addProductBtn = document.getElementById('addProductBtn');
+    const saveProductBtn = document.getElementById('saveProductBtn');
+    const closeBtns = document.querySelectorAll('.modal-close');
+
+    if (addProductBtn) {
+        addProductBtn.addEventListener('click', () => openProductModal());
+    }
+
+    if (saveProductBtn) {
+        saveProductBtn.addEventListener('click', saveProduct);
+    }
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', closeProductModal);
+    });
+
+    // Закрытие по клику вне модального окна
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeProductModal();
+        }
+    });
+}
+
+function openProductModal(productId = null) {
+    const modal = document.getElementById('productModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const form = document.getElementById('productForm');
+
+    if (productId) {
+        // Режим редактирования
+        const product = DataManager.getProduct(productId);
+        if (product) {
+            modalTitle.textContent = 'Редактировать товар';
+            document.getElementById('productId').value = product.id;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productDescription').value = product.description;
+            document.getElementById('productIcon').value = product.icon;
+            document.getElementById('productPrice').value = product.price || '';
+            document.getElementById('productVisible').checked = product.visible !== false;
+        }
+    } else {
+        // Режим добавления
+        modalTitle.textContent = 'Добавить товар';
+        form.reset();
+        document.getElementById('productId').value = '';
+        document.getElementById('productVisible').checked = true;
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeProductModal() {
+    const modal = document.getElementById('productModal');
+    modal.style.display = 'none';
+}
+
+function saveProduct() {
+    const productId = document.getElementById('productId').value;
+    const productData = {
+        name: document.getElementById('productName').value,
+        category: document.getElementById('productCategory').value,
+        description: document.getElementById('productDescription').value,
+        icon: document.getElementById('productIcon').value || '💄',
+        price: parseFloat(document.getElementById('productPrice').value) || 0,
+        visible: document.getElementById('productVisible').checked
+    };
+
+    if (!productData.name || !productData.category || !productData.description) {
+        alert('Пожалуйста, заполните все обязательные поля');
+        return;
+    }
+
+    if (productId) {
+        // Обновление существующего товара
+        DataManager.updateProduct(productId, productData);
+    } else {
+        // Добавление нового товара
+        DataManager.addProduct(productData);
+    }
+
+    closeProductModal();
+    loadProducts();
+    alert('Товар сохранен!');
+}
+
+// Глобальные функции для кнопок (вызываются через onclick)
+window.editProduct = function(productId) {
+    openProductModal(productId);
+};
+
+window.deleteProduct = function(productId) {
+    if (confirm('Вы уверены, что хотите удалить этот товар?')) {
+        DataManager.deleteProduct(productId);
+        loadProducts();
+        alert('Товар удален!');
+    }
+};
 
 console.log('✅ Admin panel loaded');

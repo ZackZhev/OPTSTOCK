@@ -107,6 +107,15 @@ h1, h2, h3 {
 /* ========================================
    ЭКРАН АВТОРИЗАЦИИ
 ======================================== */
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-purple) 100%);
+    padding: 20px;
+}
+
 .login-screen {
     display: flex;
     justify-content: center;
@@ -114,6 +123,23 @@ h1, h2, h3 {
     min-height: 100vh;
     background: linear-gradient(135deg, var(--primary-pink) 0%, var(--primary-purple) 100%);
     padding: 20px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: var(--primary-pink);
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.admin-user {
+    font-size: 13px;
+    color: var(--text-light);
 }
 
 .login-container {
@@ -306,6 +332,38 @@ h1, h2, h3 {
     display: block;
 }
 
+.tab-content {
+    display: none;
+    padding: 30px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Orders Table */
+.orders-table {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Recent Orders */
+.recent-orders {
+    background: var(--bg-white);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-top: 20px;
+}
+
+.recent-orders h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
 /* ========================================
    ДАШБОРД
 ======================================== */
@@ -493,6 +551,91 @@ h1, h2, h3 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+}
+
+.product-card {
+    background: var(--bg-white);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.product-icon-display {
+    font-size: 48px;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-cream);
+    border-radius: 12px;
+}
+
+.product-info h4 {
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.product-info p {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 5px 0;
+}
+
+.product-info strong {
+    color: var(--primary-pink);
+    font-size: 18px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit, .btn-delete {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-edit {
+    background: #E3F2FD;
+    color: #2196F3;
+}
+
+.btn-edit:hover {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-delete {
+    background: #FFEBEE;
+    color: #F44336;
+}
+
+.btn-delete:hover {
+    background: #F44336;
+    color: white;
 }
 
 .product-item {
@@ -735,6 +878,33 @@ h1, h2, h3 {
     color: var(--success);
 }
 
+.status-pending {
+    background: #FFF3E0;
+    color: var(--warning);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-processing {
+    background: #E3F2FD;
+    color: var(--info);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-completed {
+    background: #E8F5E9;
+    color: var(--success);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 /* ========================================
    АНАЛИТИКА
 ======================================== */
@@ -763,6 +933,27 @@ h1, h2, h3 {
     max-width: 800px;
 }
 
+.settings-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-section {
+    background: var(--bg-white);
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+
+.form-section h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--text-dark);
+    border-bottom: 2px solid var(--bg-cream);
+    padding-bottom: 10px;
+}
+
 .settings-group {
     background: var(--bg-white);
     border-radius: 15px;
@@ -779,6 +970,30 @@ h1, h2, h3 {
 
 .settings-actions {
     margin-top: 30px;
+}
+
+/* Analytics Section */
+.analytics-section {
+    background: var(--bg-white);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.analytics-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-cream);
+    border-radius: 10px;
+    padding: 20px;
 }
 
 /* ========================================
@@ -833,6 +1048,18 @@ h1, h2, h3 {
 
 .modal-close:hover {
     color: var(--danger);
+}
+
+.modal-body {
+    padding: 25px;
+}
+
+.modal-footer {
+    padding: 20px 25px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
 }
 
 .modal-form {

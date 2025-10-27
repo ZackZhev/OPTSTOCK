@@ -9,7 +9,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // ==========================================
     // ПАДАЮЩИЕ СЕРДЕЧКИ
     // ==========================================
-    createFallingHearts();
+    // Проверяем настройки перед созданием сердечек
+    if (typeof DataManager !== 'undefined') {
+        const settings = DataManager.getSettings();
+        if (settings.heartsEnabled !== false) {
+            createFallingHearts();
+        } else {
+            console.log('Анимация сердечек отключена в настройках');
+        }
+    } else {
+        // Если DataManager не загружен, показываем сердечки по умолчанию
+        createFallingHearts();
+    }
 
     // ==========================================
     // КАРУСЕЛЬ ТОВАРОВ
@@ -581,12 +592,9 @@ function initProductCarousel() {
     const nextBtn = document.querySelector('.carousel-btn-next');
     const productsGrid = document.querySelector('.products-grid');
     const wrapper = document.querySelector('.products-carousel-wrapper');
+    const indicatorsContainer = document.getElementById('carouselIndicators');
 
     console.log('Инициализация карусели...');
-    console.log('prevBtn:', prevBtn);
-    console.log('nextBtn:', nextBtn);
-    console.log('productsGrid:', productsGrid);
-    console.log('wrapper:', wrapper);
 
     if (!prevBtn || !nextBtn || !productsGrid || !wrapper) {
         console.error('Элементы карусели не найдены!');
@@ -595,10 +603,22 @@ function initProductCarousel() {
 
     console.log('Все элементы найдены, запуск карусели...');
 
-    let currentPosition = 0;
-    const cardWidth = 220; // минимальная ширина карточки
-    const gap = 25; // промежуток между карточками
-    const scrollAmount = cardWidth + gap;
+    let currentIndex = 0;
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
+    let animationID;
+
+    // Конфигурация
+    const config = {
+        cardWidth: 220,
+        gap: 25,
+        autoplayDelay: 5000,
+        autoplayEnabled: false
+    };
+
+    const scrollAmount = config.cardWidth + config.gap;
 
     // Получаем количество видимых карточек
     function getVisibleCards() {
@@ -606,55 +626,94 @@ function initProductCarousel() {
         return Math.floor(wrapperWidth / scrollAmount);
     }
 
-    // Получаем максимальную позицию прокрутки
-    function getMaxScroll() {
+    // Получаем общее количество "страниц"
+    function getTotalPages() {
         const totalCards = productsGrid.children.length;
         const visibleCards = getVisibleCards();
-        return Math.max(0, (totalCards - visibleCards) * scrollAmount);
+        return Math.max(1, Math.ceil(totalCards - visibleCards + 1));
+    }
+
+    // Создаем индикаторы прогресса
+    function createIndicators() {
+        if (!indicatorsContainer) return;
+
+        indicatorsContainer.innerHTML = '';
+        const totalPages = getTotalPages();
+
+        for (let i = 0; i < totalPages; i++) {
+            const indicator = document.createElement('div');
+            indicator.className = 'carousel-indicator';
+            if (i === 0) indicator.classList.add('active');
+
+            indicator.addEventListener('click', () => {
+                goToPage(i);
+            });
+
+            indicatorsContainer.appendChild(indicator);
+        }
+    }
+
+    // Обновляем активный индикатор
+    function updateIndicators() {
+        if (!indicatorsContainer) return;
+
+        const indicators = indicatorsContainer.querySelectorAll('.carousel-indicator');
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+
+    // Переход к конкретной странице
+    function goToPage(pageIndex) {
+        const totalPages = getTotalPages();
+        currentIndex = Math.max(0, Math.min(pageIndex, totalPages - 1));
+
+        const position = currentIndex * scrollAmount;
+        productsGrid.style.transform = `translateX(-${position}px)`;
+
+        updateButtons();
+        updateIndicators();
+
+        // Вибрация на мобильных
+        if ('vibrate' in navigator) {
+            navigator.vibrate(30);
+        }
+
+        console.log('Переход к странице:', currentIndex);
     }
 
     // Обновляем состояние кнопок
     function updateButtons() {
-        const maxScroll = getMaxScroll();
+        const totalPages = getTotalPages();
 
-        // Отключаем кнопку "назад" если в начале
-        prevBtn.disabled = currentPosition <= 0;
-
-        // Отключаем кнопку "вперед" если в конце
-        nextBtn.disabled = currentPosition >= maxScroll;
+        prevBtn.disabled = currentIndex <= 0;
+        nextBtn.disabled = currentIndex >= totalPages - 1;
     }
 
     // Прокрутка влево
-    prevBtn.addEventListener('click', () => {
-        if (prevBtn.disabled) return;
-
-        currentPosition = Math.max(0, currentPosition - scrollAmount);
-        productsGrid.style.transform = `translateX(-${currentPosition}px)`;
-        updateButtons();
-
-        // Вибрация на мобильных
-        if ('vibrate' in navigator) {
-            navigator.vibrate(30);
-        }
-
-        console.log('Прокрутка влево, позиция:', currentPosition);
-    });
+    function scrollPrev() {
+        if (currentIndex <= 0) return;
+        goToPage(currentIndex - 1);
+    }
 
     // Прокрутка вправо
-    nextBtn.addEventListener('click', () => {
-        if (nextBtn.disabled) return;
+    function scrollNext() {
+        const totalPages = getTotalPages();
+        if (currentIndex >= totalPages - 1) return;
+        goToPage(currentIndex + 1);
+    }
 
-        const maxScroll = getMaxScroll();
-        currentPosition = Math.min(maxScroll, currentPosition + scrollAmount);
-        productsGrid.style.transform = `translateX(-${currentPosition}px)`;
-        updateButtons();
+    // Обработчики кнопок
+    prevBtn.addEventListener('click', scrollPrev);
+    nextBtn.addEventListener('click', scrollNext);
 
-        // Вибрация на мобильных
-        if ('vibrate' in navigator) {
-            navigator.vibrate(30);
+    // Поддержка клавиатуры
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            scrollPrev();
+        } else if (e.key === 'ArrowRight') {
+            scrollNext();
         }
-
-        console.log('Прокрутка вправо, позиция:', currentPosition);
     });
 
     // Обработка изменения размера окна
@@ -662,10 +721,11 @@ function initProductCarousel() {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            // Сброс позиции при изменении размера
-            currentPosition = 0;
+            currentIndex = 0;
             productsGrid.style.transform = `translateX(0)`;
+            createIndicators();
             updateButtons();
+            updateIndicators();
         }, 250);
     });
 
@@ -675,10 +735,17 @@ function initProductCarousel() {
 
     wrapper.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
+        isDragging = true;
+    }, { passive: true });
+
+    wrapper.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        touchEndX = e.changedTouches[0].screenX;
     }, { passive: true });
 
     wrapper.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
+        if (!isDragging) return;
+        isDragging = false;
         handleSwipe();
     }, { passive: true });
 
@@ -688,18 +755,84 @@ function initProductCarousel() {
 
         if (Math.abs(diff) > swipeThreshold) {
             if (diff > 0) {
-                // Свайп влево - прокрутка вправо
-                nextBtn.click();
+                scrollNext();
             } else {
-                // Свайп вправо - прокрутка влево
-                prevBtn.click();
+                scrollPrev();
             }
         }
     }
 
+    // Поддержка мыши (drag to scroll)
+    let mouseStartX = 0;
+    let isDraggingMouse = false;
+
+    wrapper.addEventListener('mousedown', (e) => {
+        isDraggingMouse = true;
+        mouseStartX = e.pageX;
+        wrapper.style.cursor = 'grabbing';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!isDraggingMouse) return;
+        e.preventDefault();
+    });
+
+    document.addEventListener('mouseup', (e) => {
+        if (!isDraggingMouse) return;
+        isDraggingMouse = false;
+        wrapper.style.cursor = 'grab';
+
+        const diff = mouseStartX - e.pageX;
+        const dragThreshold = 50;
+
+        if (Math.abs(diff) > dragThreshold) {
+            if (diff > 0) {
+                scrollNext();
+            } else {
+                scrollPrev();
+            }
+        }
+    });
+
+    // Автопрокрутка (опционально)
+    let autoplayInterval;
+
+    function startAutoplay() {
+        if (!config.autoplayEnabled) return;
+
+        autoplayInterval = setInterval(() => {
+            const totalPages = getTotalPages();
+            if (currentIndex >= totalPages - 1) {
+                goToPage(0);
+            } else {
+                scrollNext();
+            }
+        }, config.autoplayDelay);
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+        }
+    }
+
+    // Останавливаем автопрокрутку при взаимодействии
+    wrapper.addEventListener('mouseenter', stopAutoplay);
+    wrapper.addEventListener('mouseleave', startAutoplay);
+    prevBtn.addEventListener('click', stopAutoplay);
+    nextBtn.addEventListener('click', stopAutoplay);
+
     // Инициализация
+    createIndicators();
     updateButtons();
+    updateIndicators();
+
+    if (config.autoplayEnabled) {
+        startAutoplay();
+    }
+
     console.log('🎠 Карусель товаров активирована');
+    console.log('Всего страниц:', getTotalPages());
 }
 
 // Экспорт функций для использования в других модулях

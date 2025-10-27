@@ -470,19 +470,31 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 .products-carousel-wrapper {
     overflow: hidden;
     flex: 1;
     max-width: calc(100% - 130px);
+    position: relative;
+    border-radius: 15px;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.products-carousel-wrapper:active {
+    cursor: grabbing;
 }
 
 .products-grid {
     display: flex;
     gap: 25px;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    padding: 10px 5px;
 }
 
 .carousel-btn {
@@ -498,28 +510,87 @@ h1 {
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.carousel-btn:hover:not(:disabled)::before {
+    width: 100px;
+    height: 100px;
 }
 
 .carousel-btn:hover:not(:disabled) {
-    transform: scale(1.1);
-    box-shadow: 0 6px 20px rgba(255, 107, 157, 0.5);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.5);
 }
 
 .carousel-btn:active:not(:disabled) {
-    transform: scale(0.95);
+    transform: scale(0.95) rotate(0deg);
 }
 
 .carousel-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    filter: grayscale(0.5);
 }
 
 .carousel-btn svg {
     fill: white;
     width: 28px;
     height: 28px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.carousel-btn:hover:not(:disabled) svg {
+    transform: scale(1.1);
+}
+
+/* Индикаторы прогресса карусели */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 107, 157, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.carousel-indicator:hover {
+    background: rgba(255, 107, 157, 0.4);
+    transform: scale(1.2);
+}
+
+.carousel-indicator.active {
+    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    width: 30px;
+    border-radius: 5px;
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.4);
 }
 
 /* === КАРТОЧКИ ТОВАРОВ === */
@@ -802,6 +873,20 @@ h1 {
         height: 22px;
     }
 
+    .carousel-indicators {
+        gap: 8px;
+        margin-top: 15px;
+    }
+
+    .carousel-indicator {
+        width: 8px;
+        height: 8px;
+    }
+
+    .carousel-indicator.active {
+        width: 24px;
+    }
+
     .social-links {
         gap: 15px;
     }
@@ -888,6 +973,20 @@ h1 {
     .carousel-btn svg {
         width: 18px;
         height: 18px;
+    }
+
+    .carousel-indicators {
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .carousel-indicator {
+        width: 6px;
+        height: 6px;
+    }
+
+    .carousel-indicator.active {
+        width: 20px;
     }
 
     .product-card {

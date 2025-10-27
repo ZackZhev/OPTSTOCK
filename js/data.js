@@ -450,7 +450,8 @@ const DataManager = {
             whatsappNumber: '996555123456',
             instagramHandle: 'optstock_kg',
             tiktokHandle: 'optstock_kg',
-            dgisLink: 'https://2gis.kg/bishkek'
+            dgisLink: 'https://2gis.kg/bishkek',
+            heartsEnabled: true
         };
     },
 

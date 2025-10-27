@@ -11,13 +11,16 @@
 }
 
 :root {
-    --primary-pink: #FFB6C1;
-    --primary-rose: #FFC0CB;
-    --light-pink: #FFE4E1;
-    --text-dark: #2C2C2C;
-    --text-light: #8B8B8B;
+    --primary-black: #000000;
+    --primary-dark: #1a1a1a;
+    --secondary-gray: #333333;
+    --light-gray: #666666;
+    --lighter-gray: #999999;
+    --text-dark: #000000;
+    --text-light: #666666;
     --bg-white: #FFFFFF;
-    --bg-light: #FFF5F7;
+    --bg-light: #f5f5f5;
+    --accent-gray: #e0e0e0;
 }
 
 body {
@@ -38,7 +41,7 @@ body {
 .bg-circle-1 {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(255, 107, 157, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.08) 0%, transparent 70%);
     border-radius: 50%;
     top: -200px;
     right: -200px;
@@ -48,7 +51,7 @@ body {
 .bg-circle-2 {
     width: 400px;
     height: 400px;
-    background: radial-gradient(circle, rgba(192, 108, 132, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(51, 51, 51, 0.06) 0%, transparent 70%);
     border-radius: 50%;
     bottom: -150px;
     left: -150px;
@@ -185,11 +188,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.12);
     position: relative;
     z-index: 2;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: 3px solid var(--light-pink);
+    border: 3px solid var(--primary-black);
 }
 
 .logo-container:hover {
@@ -204,7 +207,7 @@ body {
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+    background: linear-gradient(135deg, var(--primary-black), var(--secondary-gray));
     border-radius: 50%;
     z-index: -1;
     opacity: 0;
@@ -225,7 +228,7 @@ body {
     font-family: 'Playfair Display', serif;
     font-size: 68px;
     font-weight: 900;
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -252,7 +255,7 @@ h1 {
     font-family: 'Playfair Display', serif;
     font-size: 56px;
     font-weight: 800;
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 50%, #8B4789 100%);
+    background: linear-gradient(135deg, #000000 0%, #333333 50%, #666666 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -260,7 +263,7 @@ h1 {
     letter-spacing: -1px;
     position: relative;
     z-index: 2;
-    text-shadow: 0 2px 20px rgba(255, 107, 157, 0.2);
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
 }
 
 .subtitle {
@@ -274,7 +277,7 @@ h1 {
 }
 
 .subtitle strong {
-    color: var(--primary-pink);
+    color: var(--primary-black);
     font-weight: 700;
 }
 
@@ -283,15 +286,15 @@ h1 {
     align-items: center;
     gap: 12px;
     padding: 14px 28px;
-    background: linear-gradient(135deg, rgba(255, 107, 157, 0.15) 0%, rgba(192, 108, 132, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.08) 0%, rgba(51, 51, 51, 0.08) 100%);
     border-radius: 50px;
     font-size: 16px;
     font-weight: 600;
     color: var(--text-dark);
-    border: 2px solid rgba(255, 107, 157, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.15);
     position: relative;
     z-index: 2;
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .hours::before {
@@ -405,30 +408,35 @@ h1 {
     z-index: 1;
 }
 
-/* Цвета кнопок */
+/* Цвета кнопок - Черно-белая тема */
 .btn-whatsapp {
-    background: #25D366;
+    background: #000000;
+    border: 2px solid #333333;
 }
 
 .btn-instagram {
-    background: linear-gradient(135deg, #833AB4 0%, #C13584 50%, #E1306C 75%, #F56040 100%);
+    background: linear-gradient(135deg, #1a1a1a 0%, #333333 50%, #4d4d4d 100%);
+    border: 2px solid #333333;
 }
 
 .btn-2gis {
-    background: #00CA74;
+    background: #1a1a1a;
+    border: 2px solid #333333;
 }
 
 .btn-tiktok {
     background: #000000;
+    border: 2px solid #333333;
 }
 
 .btn-whatsapp-opt {
-    background: #128C7E;
+    background: #333333;
+    border: 2px solid #4d4d4d;
 }
 
 .btn-empty {
-    background: var(--primary-pink);
-    border: 2px solid var(--primary-rose);
+    background: var(--primary-black);
+    border: 2px solid var(--secondary-gray);
 }
 
 /* === КАТАЛОГ === */
@@ -450,7 +458,7 @@ h1 {
     font-family: 'Playfair Display', serif;
     font-size: 42px;
     font-weight: 800;
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -502,14 +510,14 @@ h1 {
     width: 55px;
     height: 55px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
-    border: none;
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    border: 2px solid #4d4d4d;
     color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(255, 107, 157, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
     position: relative;
@@ -536,7 +544,7 @@ h1 {
 
 .carousel-btn:hover:not(:disabled) {
     transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
 }
 
 .carousel-btn:active:not(:disabled) {
@@ -574,23 +582,23 @@ h1 {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: rgba(255, 107, 157, 0.2);
+    background: rgba(0, 0, 0, 0.2);
     cursor: pointer;
     transition: all 0.3s ease;
     border: 2px solid transparent;
 }
 
 .carousel-indicator:hover {
-    background: rgba(255, 107, 157, 0.4);
+    background: rgba(0, 0, 0, 0.4);
     transform: scale(1.2);
 }
 
 .carousel-indicator.active {
-    background: linear-gradient(135deg, #FF6B9D 0%, #C06C84 100%);
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
     width: 30px;
     border-radius: 5px;
     transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(255, 107, 157, 0.4);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* === КАРТОЧКИ ТОВАРОВ === */
@@ -599,10 +607,10 @@ h1 {
     border-radius: 25px;
     padding: 30px 20px;
     text-align: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    border: 2px solid rgba(255, 107, 157, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
     min-width: 220px;
@@ -616,7 +624,7 @@ h1 {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, var(--primary-pink), var(--primary-purple));
+    background: linear-gradient(90deg, #000000, #333333);
     transform: scaleX(0);
     transition: transform 0.4s ease;
 }
@@ -627,8 +635,8 @@ h1 {
 
 .product-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 50px rgba(255, 107, 157, 0.2);
-    border-color: var(--primary-pink);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    border-color: var(--primary-black);
 }
 
 .product-icon {
@@ -654,7 +662,7 @@ h1 {
     inset: -3px;
     border-radius: 23px;
     padding: 3px;
-    background: linear-gradient(135deg, var(--primary-pink), var(--primary-purple));
+    background: linear-gradient(135deg, var(--primary-black), var(--secondary-gray));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -666,29 +674,29 @@ h1 {
     opacity: 1;
 }
 
-/* Градиенты для категорий */
+/* Градиенты для категорий - Черно-белые */
 .product-card:nth-child(1) .product-icon {
-    background: linear-gradient(135deg, #FFE5E5 0%, #FFC9C9 100%);
+    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
 }
 
 .product-card:nth-child(2) .product-icon {
-    background: linear-gradient(135deg, #FFE8F5 0%, #FFD1E8 100%);
+    background: linear-gradient(135deg, #f0f0f0 0%, #d9d9d9 100%);
 }
 
 .product-card:nth-child(3) .product-icon {
-    background: linear-gradient(135deg, #FFF0E5 0%, #FFE0C9 100%);
+    background: linear-gradient(135deg, #ebebeb 0%, #d4d4d4 100%);
 }
 
 .product-card:nth-child(4) .product-icon {
-    background: linear-gradient(135deg, #F5E5FF 0%, #E8C9FF 100%);
+    background: linear-gradient(135deg, #e6e6e6 0%, #cccccc 100%);
 }
 
 .product-card:nth-child(5) .product-icon {
-    background: linear-gradient(135deg, #E5F5FF 0%, #C9E8FF 100%);
+    background: linear-gradient(135deg, #e1e1e1 0%, #c7c7c7 100%);
 }
 
 .product-card:nth-child(6) .product-icon {
-    background: linear-gradient(135deg, #FFF8E5 0%, #FFEDC9 100%);
+    background: linear-gradient(135deg, #ededed 0%, #d1d1d1 100%);
 }
 
 .product-name {
@@ -772,7 +780,7 @@ h1 {
 }
 
 .social-instagram svg {
-    fill: #E1306C;
+    fill: #000000;
 }
 
 .social-tiktok svg {
@@ -780,11 +788,11 @@ h1 {
 }
 
 .social-whatsapp svg {
-    fill: #25D366;
+    fill: #1a1a1a;
 }
 
 .social-2gis svg {
-    fill: #00CA74;
+    fill: #333333;
 }
 
 /* === АДАПТИВНЫЙ ДИЗАЙН === */

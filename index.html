@@ -125,70 +125,97 @@
       </section>
 
       <!-- Каталог косметики -->
-<div class="catalog-section">
-        <h2 class="catalog-title">НАШ АССОРТИМЕНТ</h2>
-        <p class="catalog-subtitle">Широкий выбор косметики для вашей красоты</p>
-
-        <div class="carousel-container">
-            <button class="carousel-button prev" onclick="moveCarousel(-1)">‹</button>
-            
-            <div class="carousel-wrapper">
-                <div class="carousel-track" id="carouselTrack">
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <div class="product-icon">🧴</div>
-                        </div>
-                        <h3 class="product-title">Уход за кожей</h3>
-                        <p class="product-description">Кремы, сыворотки, маски</p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <div class="product-icon">💖</div>
-                        </div>
-                        <h3 class="product-title">Очищение</h3>
-                        <p class="product-description">Мицеллярка, гели, пенки</p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <div class="product-icon">💄</div>
-                        </div>
-                        <h3 class="product-title">Макияж губ</h3>
-                        <p class="product-description">Помады, блески, карандаши</p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <div class="product-icon">✨</div>
-                        </div>
-                        <h3 class="product-title">Макияж глаз</h3>
-                        <p class="product-description">Тени, тушь, подводки</p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <div class="product-icon">🌸</div>
-                        </div>
-                        <h3 class="product-title">Парфюмерия</h3>
-                        <p class="product-description">Духи, туалетная вода</p>
-                    </div>
-
-                    <div class="product-card">
-                        <div class="product-image-container">
-                            <div class="product-icon">💅</div>
-                        </div>
-                        <h3 class="product-title">Уход за ногтями</h3>
-                        <p class="product-description">Лаки, средства для ногтей</p>
-                    </div>
-                </div>
-            </div>
-
-            <button class="carousel-button next" onclick="moveCarousel(1)">›</button>
+      <section class="catalog-section">
+        <div class="catalog-header">
+          <h2 class="catalog-title">Наш ассортимент</h2>
+          <p class="catalog-subtitle">
+            Широкий выбор косметики для вашей красоты
+          </p>
         </div>
 
-        <div class="carousel-indicators" id="indicators"></div>
-    </div>
+        <div class="catalog-carousel">
+          <button class="carousel-btn carousel-btn-prev" aria-label="Предыдущий">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+          </button>
+
+          <div class="products-carousel-wrapper">
+            <div class="products-grid">
+              <div class="product-card" data-category="makeup">
+                <div class="product-icon">💄</div>
+                <div class="product-name">Декоративная косметика</div>
+                <div class="product-description">Помады, тени, тушь</div>
+                <div class="product-details">
+                  <h4>Декоративная косметика</h4>
+                  <p>Широкий ассортимент помад, теней для век, туши для ресниц, румян и хайлайтеров.</p>
+                  <span class="details-badge">Оптом и в розницу</span>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="skincare">
+                <div class="product-icon">🧴</div>
+                <div class="product-name">Уход за кожей</div>
+                <div class="product-description">Кремы, сыворотки</div>
+                <div class="product-details">
+                  <h4>Уход за кожей</h4>
+                  <p>Профессиональные кремы, сыворотки и маски для лица. Подходят для всех типов кожи.</p>
+                  <span class="details-badge">Премиум качество</span>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="cleansing">
+                <div class="product-icon">🧼</div>
+                <div class="product-name">Очищение</div>
+                <div class="product-description">Мицеллярка, пенки</div>
+                <div class="product-details">
+                  <h4>Средства для очищения</h4>
+                  <p>Мицеллярная вода, пенки, гели и тоники для умывания. Бережно очищают кожу.</p>
+                  <span class="details-badge">Для всех типов кожи</span>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="nails">
+                <div class="product-icon">💅</div>
+                <div class="product-name">Маникюр</div>
+                <div class="product-description">Лаки, базы, топы</div>
+                <div class="product-details">
+                  <h4>Продукты для маникюра</h4>
+                  <p>Лаки для ногтей, базовые и топовые покрытия, средства для укрепления ногтей.</p>
+                  <span class="details-badge">Профессиональная линия</span>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="perfume">
+                <div class="product-icon">🌸</div>
+                <div class="product-name">Парфюмерия</div>
+                <div class="product-description">Духи, одеколоны</div>
+                <div class="product-details">
+                  <h4>Парфюмерия</h4>
+                  <p>Изысканные ароматы от мировых брендов. Духи, туалетная вода.</p>
+                  <span class="details-badge">Оригинальная продукция</span>
+                </div>
+              </div>
+
+              <div class="product-card" data-category="haircare">
+                <div class="product-icon">💆‍♀️</div>
+                <div class="product-name">Уход за волосами</div>
+                <div class="product-description">Шампуни, маски</div>
+                <div class="product-details">
+                  <h4>Уход за волосами</h4>
+                  <p>Профессиональные шампуни, кондиционеры, маски и сыворотки для волос.</p>
+                  <span class="details-badge">Салонный уход дома</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button class="carousel-btn carousel-btn-next" aria-label="Следующий">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+              <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+            </svg>
+          </button>
+        </div>
 
         <!-- Индикаторы прогресса -->
         <div class="carousel-indicators" id="carouselIndicators"></div>

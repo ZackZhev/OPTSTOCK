@@ -569,43 +569,91 @@ h1 {
 
 /* Кнопки карусели */
 .carousel-btn {
-    width: 50px;
-    height: 50px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
-    background: var(--primary-black);
-    border: 2px solid var(--secondary-gray);
+    background: linear-gradient(135deg, #000000 0%, #333333 100%);
+    border: 2px solid #4d4d4d;
     color: white;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Анимация волны при наведении */
+.carousel-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.carousel-btn:hover::before {
+    width: 100px;
+    height: 100px;
 }
 
 .carousel-btn:hover {
-    background: #333333;
-    transform: scale(1.1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.15) rotate(5deg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
 }
 
 .carousel-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.95) rotate(0deg);
+    animation: pulse 0.3s ease;
 }
 
 .carousel-btn svg {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.carousel-btn:hover svg {
+    transform: scale(1.1);
+}
+
+/* Анимация пульсации при клике */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(0, 0, 0, 0), 0 0 0 20px rgba(0, 0, 0, 0);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
 }
 
 .carousel-btn:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    filter: grayscale(0.5);
 }
 
 .carousel-btn:disabled:hover {
     transform: none;
-    background: var(--primary-black);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-btn:disabled:hover::before {
+    width: 0;
+    height: 0;
 }
 
 /* Индикаторы карусели */

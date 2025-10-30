@@ -273,11 +273,6 @@ h1 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-.hours::before {
-    content: '⏰';
-    font-size: 20px;
-    animation: swing 2s ease infinite;
-}
 
 @keyframes swing {
     0%, 100% { transform: rotate(0deg); }
@@ -384,20 +379,20 @@ h1 {
     z-index: 1;
 }
 
-/* Цвета кнопок - Черно-белая тема */
+/* Цвета кнопок - Фирменные цвета */
 .btn-whatsapp {
-    background: #000000;
-    border: 2px solid #333333;
+    background: #25D366;
+    border: 2px solid #128C7E;
 }
 
 .btn-instagram {
-    background: linear-gradient(135deg, #1a1a1a 0%, #333333 50%, #4d4d4d 100%);
-    border: 2px solid #333333;
+    background: linear-gradient(135deg, #833AB4 0%, #E1306C 50%, #FD1D1D 100%);
+    border: 2px solid #E1306C;
 }
 
 .btn-2gis {
-    background: #1a1a1a;
-    border: 2px solid #333333;
+    background: linear-gradient(135deg, #31B54E 0%, #4AB52E 100%);
+    border: 2px solid #2E9B45;
 }
 
 .btn-tiktok {
@@ -419,178 +414,66 @@ h1 {
 .catalog-section {
     background: white;
     border-radius: 30px;
-    padding: 50px 40px;
+    padding: 50px 30px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin-bottom: 30px;
     animation: fadeInUp 1s ease 0.4s both;
+    margin-bottom: 40px;
 }
 
 .catalog-header {
     text-align: center;
-    margin-bottom: 45px;
+    margin-bottom: 50px;
 }
 
 .catalog-title {
     font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #000000 0%, #333333 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-dark);
     margin-bottom: 15px;
+    letter-spacing: 2px;
 }
 
 .catalog-subtitle {
-    font-size: 17px;
+    font-size: 16px;
     color: var(--text-light);
-    font-weight: 500;
+    font-weight: 400;
 }
 
-/* === КАРУСЕЛЬ ТОВАРОВ === */
+/* Карусель каталога */
 .catalog-carousel {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .products-carousel-wrapper {
-    overflow: hidden;
     flex: 1;
-    max-width: calc(100% - 130px);
-    position: relative;
-    border-radius: 15px;
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-}
-
-.products-carousel-wrapper:active {
-    cursor: grabbing;
+    overflow: hidden;
+    border-radius: 20px;
 }
 
 .products-grid {
     display: flex;
     gap: 25px;
-    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    padding: 10px 5px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 5px;
 }
 
-.carousel-btn {
-    flex-shrink: 0;
-    width: 55px;
-    height: 55px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #000000 0%, #333333 100%);
-    border: 2px solid #4d4d4d;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 10;
-    position: relative;
-    overflow: hidden;
-}
-
-.carousel-btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.4s ease, height 0.4s ease;
-}
-
-.carousel-btn:hover:not(:disabled)::before {
-    width: 100px;
-    height: 100px;
-}
-
-.carousel-btn:hover:not(:disabled) {
-    transform: scale(1.15) rotate(5deg);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-}
-
-.carousel-btn:active:not(:disabled) {
-    transform: scale(0.95) rotate(0deg);
-}
-
-.carousel-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    filter: grayscale(0.5);
-}
-
-.carousel-btn svg {
-    fill: white;
-    width: 28px;
-    height: 28px;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
-}
-
-.carousel-btn:hover:not(:disabled) svg {
-    transform: scale(1.1);
-}
-
-/* Индикаторы прогресса карусели */
-.carousel-indicators {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.carousel-indicator {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.carousel-indicator:hover {
-    background: rgba(0, 0, 0, 0.4);
-    transform: scale(1.2);
-}
-
-.carousel-indicator.active {
-    background: linear-gradient(135deg, #000000 0%, #333333 100%);
-    width: 30px;
-    border-radius: 5px;
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* === КАРТОЧКИ ТОВАРОВ === */
+/* Карточки товаров */
 .product-card {
+    min-width: 280px;
     background: white;
-    border-radius: 25px;
-    padding: 30px 20px;
-    text-align: center;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 30px 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
-    border: 2px solid rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
-    min-width: 220px;
-    flex-shrink: 0;
+    border: 2px solid rgba(0, 0, 0, 0.05);
 }
 
 .product-card::before {
@@ -611,135 +494,141 @@ h1 {
 
 .product-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    border-color: var(--primary-black);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    border-color: rgba(0, 0, 0, 0.1);
 }
 
 .product-icon {
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 20px;
-    border-radius: 25px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-size: 70px;
-    transition: all 0.4s ease;
-    position: relative;
-}
-
-.product-card:hover .product-icon {
-    transform: scale(1.1) rotate(5deg);
-}
-
-.product-icon::after {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 23px;
-    padding: 3px;
-    background: linear-gradient(135deg, var(--primary-black), var(--secondary-gray));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-.product-card:hover .product-icon::after {
-    opacity: 1;
-}
-
-/* Градиенты для категорий - Черно-белые */
-.product-card:nth-child(1) .product-icon {
-    background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-}
-
-.product-card:nth-child(2) .product-icon {
-    background: linear-gradient(135deg, #f0f0f0 0%, #d9d9d9 100%);
-}
-
-.product-card:nth-child(3) .product-icon {
-    background: linear-gradient(135deg, #ebebeb 0%, #d4d4d4 100%);
-}
-
-.product-card:nth-child(4) .product-icon {
-    background: linear-gradient(135deg, #e6e6e6 0%, #cccccc 100%);
-}
-
-.product-card:nth-child(5) .product-icon {
-    background: linear-gradient(135deg, #e1e1e1 0%, #c7c7c7 100%);
-}
-
-.product-card:nth-child(6) .product-icon {
-    background: linear-gradient(135deg, #ededed 0%, #d1d1d1 100%);
+    margin-bottom: 20px;
+    display: block;
+    text-align: center;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
 .product-name {
-    font-size: 16px;
-    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 600;
     color: var(--text-dark);
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .product-description {
-    font-size: 13px;
+    font-size: 14px;
     color: var(--text-light);
-    font-weight: 500;
-    transition: opacity 0.3s ease;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
-/* Подробное описание товара при наведении */
 .product-details {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(26, 26, 26, 0.98) 100%);
-    border-radius: 25px;
+    background: white;
     padding: 25px 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 10;
-    color: white;
 }
 
 .product-card:hover .product-details {
-    opacity: 1;
-    visibility: visible;
+    transform: translateY(0);
 }
 
 .product-details h4 {
+    font-family: 'Playfair Display', serif;
     font-size: 18px;
-    font-weight: 700;
+    font-weight: 600;
+    color: var(--text-dark);
     margin-bottom: 12px;
-    color: white;
 }
 
 .product-details p {
     font-size: 13px;
+    color: var(--text-light);
     line-height: 1.6;
-    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 15px;
 }
 
 .details-badge {
     display: inline-block;
-    padding: 6px 14px;
-    background: white;
-    color: var(--primary-black);
+    background: var(--primary-black);
+    color: white;
+    padding: 6px 15px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* Кнопки карусели */
+.carousel-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-black);
+    border: 2px solid var(--secondary-gray);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.carousel-btn:hover {
+    background: #333333;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-btn:active {
+    transform: scale(0.95);
+}
+
+.carousel-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.carousel-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-btn:disabled:hover {
+    transform: none;
+    background: var(--primary-black);
+}
+
+/* Индикаторы карусели */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.carousel-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicator.active {
+    background: var(--primary-black);
+    width: 30px;
+    border-radius: 5px;
 }
 
 /* === СОЦИАЛЬНЫЕ СЕТИ === */

@@ -615,100 +615,329 @@ function createFallingHearts() {
 // КАРУСЕЛЬ ТОВАРОВ
 // ==========================================
 function initProductCarousel() {
-    const prevBtn = document.querySelector('.carousel-btn-prev');
-    const nextBtn = document.querySelector('.carousel-btn-next');
-    const productsGrid = document.querySelector('.products-grid');
-    const wrapper = document.querySelector('.products-carousel-wrapper');
-    const indicatorsContainer = document.getElementById('carouselIndicators');
+    console.log('Инициализация новой карусели товаров...');
 
-    console.log('Инициализация карусели...');
-
-    if (!prevBtn || !nextBtn || !productsGrid || !wrapper) {
-        console.error('Элементы карусели не найдены!');
+    // Проверяем наличие элементов
+    const catalogSection = document.querySelector('.products-section') || document.querySelector('.catalog-section');
+    
+    if (!catalogSection) {
+        console.error('Секция каталога не найдена!');
         return;
     }
 
-    console.log('Все элементы найдены, запуск карусели...');
-
-    let currentIndex = 0;
-    let isDragging = false;
-    let startPos = 0;
-    let currentTranslate = 0;
-    let prevTranslate = 0;
-    let animationID;
-
-    // Конфигурация
-    const config = {
-        cardWidth: 220,
-        gap: 25,
-        autoplayDelay: 5000,
-        autoplayEnabled: false
-    };
-
-    const scrollAmount = config.cardWidth + config.gap;
-
-    // Получаем количество видимых карточек
-    function getVisibleCards() {
-        const wrapperWidth = wrapper.offsetWidth;
-        return Math.floor(wrapperWidth / scrollAmount);
+    // Создаём новую структуру карусели
+    const existingGrid = catalogSection.querySelector('.products-grid');
+    
+    if (!existingGrid) {
+        console.error('Сетка товаров не найдена!');
+        return;
     }
 
-    // Получаем общее количество "страниц"
-    function getTotalPages() {
-        const totalCards = productsGrid.children.length;
-        const visibleCards = getVisibleCards();
-        return Math.max(1, Math.ceil(totalCards - visibleCards + 1));
+    // Получаем все карточки товаров
+    const productCards = Array.from(existingGrid.querySelectorAll('.product-card'));
+    
+    if (productCards.length === 0) {
+        console.error('Карточки товаров не найдены!');
+        return;
     }
 
-    // Создаем индикаторы прогресса
-    function createIndicators() {
-        if (!indicatorsContainer) return;
+    // Создаём контейнер карусели
+    const carouselHTML = `
+        <div class="carousel-container-new">
+            <button class="carousel-button-new prev" onclick="moveCarouselNew(-1)" aria-label="Предыдущий">‹</button>
+            
+            <div class="carousel-wrapper-new">
+                <div class="carousel-track-new" id="carouselTrackNew">
+                    ${productCards.map(card => card.outerHTML).join('')}
+                </div>
+            </div>
 
-        indicatorsContainer.innerHTML = '';
-        const totalPages = getTotalPages();
+            <button class="carousel-button-new next" onclick="moveCarouselNew(1)" aria-label="Следующий">›</button>
+        </div>
+        <div class="carousel-indicators-new" id="carouselIndicatorsNew"></div>
+    `;
 
-        for (let i = 0; i < totalPages; i++) {
+    // Заменяем старую сетку на карусель
+    existingGrid.outerHTML = carouselHTML;
+
+    // Добавляем стили, если их ещё нет
+    if (!document.getElementById('carousel-new-styles')) {
+        const styleSheet = document.createElement('style');
+        styleSheet.id = 'carousel-new-styles';
+        styleSheet.textContent = `
+            /* Стили для новой карусели */
+            .carousel-container-new {
+                position: relative;
+                overflow: hidden;
+                padding: 0 60px;
+                margin: 40px 0;
+            }
+
+            .carousel-wrapper-new {
+                overflow: hidden;
+            }
+
+            .carousel-track-new {
+                display: flex;
+                transition: transform 0.5s ease;
+                gap: 20px;
+            }
+
+            .carousel-track-new .product-card {
+                min-width: calc(33.333% - 14px);
+                flex-shrink: 0;
+                margin: 0;
+            }
+
+            .carousel-button-new {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background-color: #333;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+            .carousel-button-new:hover {
+                background-color: #555;
+                transform: translateY(-50%) scale(1.1);
+            }
+
+            .carousel-button-new:active {
+                transform: translateY(-50%) scale(0.95);
+            }
+
+            .carousel-button-new.prev {
+                left: 0;
+            }
+
+            .carousel-button-new.next {
+                right: 0;
+            }
+
+            .carousel-indicators-new {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 30px;
+            }
+
+            .carousel-indicator-new {
+                width: 50px;
+                height: 3px;
+                background-color: #ddd;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+                border-radius: 2px;
+            }
+
+            .carousel-indicator-new.active {
+                background-color: #333;
+            }
+
+            .carousel-indicator-new:hover {
+                background-color: #999;
+            }
+
+            /* Адаптив для планшетов */
+            @media (max-width: 1024px) {
+                .carousel-track-new .product-card {
+                    min-width: calc(50% - 10px);
+                }
+            }
+
+            /* Адаптив для мобильных */
+            @media (max-width: 768px) {
+                .carousel-track-new .product-card {
+                    min-width: 100%;
+                }
+
+                .carousel-container-new {
+                    padding: 0 50px;
+                }
+
+                .carousel-button-new {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 20px;
+                }
+
+                .carousel-indicators-new {
+                    gap: 8px;
+                }
+
+                .carousel-indicator-new {
+                    width: 40px;
+                }
+            }
+
+            /* Анимация появления карточек */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .carousel-track-new .product-card {
+                animation: fadeInUp 0.6s ease forwards;
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    }
+
+    // JavaScript функционал карусели
+    let currentIndexNew = 0;
+    const trackNew = document.getElementById('carouselTrackNew');
+    const cardsNew = document.querySelectorAll('.carousel-track-new .product-card');
+    const indicatorsContainerNew = document.getElementById('carouselIndicatorsNew');
+
+    // Определяем количество видимых карточек
+    function getVisibleCardsNew() {
+        const width = window.innerWidth;
+        if (width <= 768) return 1;
+        if (width <= 1024) return 2;
+        return 3;
+    }
+
+    function getTotalSlidesNew() {
+        const visibleCards = getVisibleCardsNew();
+        return Math.ceil(cardsNew.length / visibleCards);
+    }
+
+    // Создаём индикаторы
+    function createIndicatorsNew() {
+        indicatorsContainerNew.innerHTML = '';
+        const totalSlides = getTotalSlidesNew();
+
+        for (let i = 0; i < totalSlides; i++) {
             const indicator = document.createElement('div');
-            indicator.className = 'carousel-indicator';
+            indicator.className = 'carousel-indicator-new';
             if (i === 0) indicator.classList.add('active');
-
-            indicator.addEventListener('click', () => {
-                goToPage(i);
-            });
-
-            indicatorsContainer.appendChild(indicator);
+            
+            indicator.addEventListener('click', () => goToSlideNew(i));
+            
+            indicatorsContainerNew.appendChild(indicator);
         }
     }
 
-    // Обновляем активный индикатор
-    function updateIndicators() {
-        if (!indicatorsContainer) return;
+    // Обновляем позицию карусели
+    function updateCarouselNew() {
+        const visibleCards = getVisibleCardsNew();
+        const cardWidth = 100 / visibleCards;
+        const offset = -currentIndexNew * 100;
+        
+        trackNew.style.transform = `translateX(${offset}%)`;
 
-        const indicators = indicatorsContainer.querySelectorAll('.carousel-indicator');
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentIndex);
+        // Обновляем индикаторы
+        document.querySelectorAll('.carousel-indicator-new').forEach((ind, idx) => {
+            ind.classList.toggle('active', idx === currentIndexNew);
         });
     }
 
-    // Переход к конкретной странице
-    function goToPage(pageIndex) {
-        const totalPages = getTotalPages();
-        currentIndex = Math.max(0, Math.min(pageIndex, totalPages - 1));
-
-        const position = currentIndex * scrollAmount;
-        productsGrid.style.transform = `translateX(-${position}px)`;
-
-        updateButtons();
-        updateIndicators();
+    // Переход к слайду
+    function goToSlideNew(index) {
+        const maxIndex = getTotalSlidesNew() - 1;
+        currentIndexNew = Math.max(0, Math.min(index, maxIndex));
+        updateCarouselNew();
 
         // Вибрация на мобильных
         if ('vibrate' in navigator) {
             navigator.vibrate(30);
         }
-
-        console.log('Переход к странице:', currentIndex);
     }
 
+    // Глобальная функция для кнопок
+    window.moveCarouselNew = function(direction) {
+        const maxIndex = getTotalSlidesNew() - 1;
+        currentIndexNew += direction;
+
+        if (currentIndexNew < 0) {
+            currentIndexNew = maxIndex;
+        } else if (currentIndexNew > maxIndex) {
+            currentIndexNew = 0;
+        }
+
+        updateCarouselNew();
+
+        // Вибрация на мобильных
+        if ('vibrate' in navigator) {
+            navigator.vibrate(50);
+        }
+    };
+
+    // Поддержка свайпов на мобильных
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    trackNew.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    trackNew.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipeNew();
+    }, { passive: true });
+
+    function handleSwipeNew() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                window.moveCarouselNew(1);
+            } else {
+                window.moveCarouselNew(-1);
+            }
+        }
+    }
+
+    // Поддержка клавиатуры
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            window.moveCarouselNew(-1);
+        } else if (e.key === 'ArrowRight') {
+            window.moveCarouselNew(1);
+        }
+    });
+
+    // Обработка изменения размера окна
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            currentIndexNew = 0;
+            createIndicatorsNew();
+            updateCarouselNew();
+        }, 250);
+    });
+
+    // Инициализация
+    createIndicatorsNew();
+    updateCarouselNew();
+
+    console.log('✅ Новая карусель товаров активирована!');
+    console.log(`📊 Всего товаров: ${cardsNew.length}`);
+    console.log(`📄 Всего страниц: ${getTotalSlidesNew()}`);
+
+    // Автопрокрутка (опционально, раскомментируйте если нужно)
+    // setInterval(() => window.moveCarouselNew(1), 5000);
+}
     // Обновляем состояние кнопок
     function updateButtons() {
         const totalPages = getTotalPages();

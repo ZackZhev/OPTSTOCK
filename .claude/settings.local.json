@@ -9,7 +9,11 @@
       "Bash(netstat:*)",
       "Bash(findstr:*)",
       "Bash(taskkill:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(if not exist images mkdir images)",
+      "Bash(copy \"C:\\Users\\你好\\Desktop\\Optstockpic\\logo\\opi_stock_avatar.png\" \"C:\\Users\\你好\\Desktop\\opt-stock-project\\images\\logo.png\")",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": []

@@ -629,7 +629,7 @@ function initProductCarousel() {
     }
 
     let currentIndex = 0;
-    const cardWidth = 305; // width + gap
+    const cardWidth = 365; // 340px width + 25px gap
     const cards = productsGrid.querySelectorAll('.product-card');
 
     // Создаем индикаторы

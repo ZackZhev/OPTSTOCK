@@ -629,41 +629,72 @@ function initProductCarousel() {
     }
 
     let currentIndex = 0;
-    const cardWidth = 365; // 340px width + 25px gap
     const cards = productsGrid.querySelectorAll('.product-card');
+
+    console.log(`Найдено карточек: ${cards.length}`);
+
+    // Получаем ширину одной карточки с отступом
+    function getCardWidth() {
+        if (cards.length > 0) {
+            const cardStyle = window.getComputedStyle(cards[0]);
+            const cardWidth = cards[0].offsetWidth;
+            const gap = 25; // из CSS
+            return cardWidth + gap;
+        }
+        return 365; // запасное значение
+    }
+
+    // Получаем количество видимых карточек
+    function getVisibleCards() {
+        const wrapperWidth = wrapper.offsetWidth;
+        const cardWidth = getCardWidth();
+        const visible = Math.floor(wrapperWidth / cardWidth);
+        console.log(`Видимых карточек: ${visible}, ширина wrapper: ${wrapperWidth}, ширина карточки: ${cardWidth}`);
+        return Math.max(1, visible);
+    }
+
+    // Получаем максимальный индекс
+    function getMaxIndex() {
+        const visibleCards = getVisibleCards();
+        return Math.max(0, cards.length - visibleCards);
+    }
+
+    // Переход к карточке
+    function goToIndex(index) {
+        const maxIndex = getMaxIndex();
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+
+        const cardWidth = getCardWidth();
+        const offset = -currentIndex * cardWidth;
+
+        console.log(`Переход к индексу ${currentIndex}, offset: ${offset}px`);
+
+        productsGrid.style.transform = `translateX(${offset}px)`;
+        updateIndicators();
+        updateButtons();
+    }
 
     // Создаем индикаторы
     function createIndicators() {
         if (!indicatorsContainer) return;
 
         indicatorsContainer.innerHTML = '';
-        const totalPages = Math.ceil(cards.length / getVisibleCards());
+        const visibleCards = getVisibleCards();
+        const totalPages = Math.max(1, Math.ceil(cards.length / visibleCards));
+
+        console.log(`Создание индикаторов: ${totalPages} страниц`);
 
         for (let i = 0; i < totalPages; i++) {
             const indicator = document.createElement('div');
             indicator.className = 'carousel-indicator';
             if (i === 0) indicator.classList.add('active');
 
-            indicator.addEventListener('click', () => goToPage(i));
+            indicator.addEventListener('click', () => {
+                const newIndex = i * visibleCards;
+                goToIndex(newIndex);
+            });
             indicatorsContainer.appendChild(indicator);
         }
-    }
-
-    // Получаем количество видимых карточек
-    function getVisibleCards() {
-        const width = window.innerWidth;
-        if (width <= 768) return 1;
-        if (width <= 1024) return 2;
-        return 3;
-    }
-
-    // Переход на страницу
-    function goToPage(page) {
-        currentIndex = page;
-        const offset = -currentIndex * cardWidth * getVisibleCards();
-        productsGrid.style.transform = `translateX(${offset}px)`;
-        updateIndicators();
-        updateButtons();
     }
 
     // Обновляем индикаторы
@@ -671,30 +702,36 @@ function initProductCarousel() {
         if (!indicatorsContainer) return;
 
         const indicators = indicatorsContainer.querySelectorAll('.carousel-indicator');
+        const visibleCards = getVisibleCards();
+        const currentPage = Math.floor(currentIndex / visibleCards);
+
         indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentIndex);
+            indicator.classList.toggle('active', index === currentPage);
         });
     }
 
     // Обновляем кнопки
     function updateButtons() {
-        const totalPages = Math.ceil(cards.length / getVisibleCards());
+        const maxIndex = getMaxIndex();
         prevBtn.disabled = currentIndex <= 0;
-        nextBtn.disabled = currentIndex >= totalPages - 1;
+        nextBtn.disabled = currentIndex >= maxIndex;
+
+        console.log(`Кнопки: prev=${prevBtn.disabled}, next=${nextBtn.disabled}, currentIndex=${currentIndex}, maxIndex=${maxIndex}`);
     }
 
     // Обработчики кнопок
-    prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) {
-            goToPage(currentIndex - 1);
-        }
+    prevBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Клик назад');
+        const visibleCards = getVisibleCards();
+        goToIndex(currentIndex - visibleCards);
     });
 
-    nextBtn.addEventListener('click', () => {
-        const totalPages = Math.ceil(cards.length / getVisibleCards());
-        if (currentIndex < totalPages - 1) {
-            goToPage(currentIndex + 1);
-        }
+    nextBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Клик вперед');
+        const visibleCards = getVisibleCards();
+        goToIndex(currentIndex + visibleCards);
     });
 
     // Поддержка клавиатуры
@@ -732,18 +769,20 @@ function initProductCarousel() {
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
+            console.log('Изменение размера окна, пересоздание карусели');
             currentIndex = 0;
             createIndicators();
-            goToPage(0);
+            goToIndex(0);
         }, 250);
     });
 
     // Инициализация
-    createIndicators();
-    updateButtons();
-
-    console.log('🎠 Карусель товаров активирована');
-    console.log(`Всего товаров: ${cards.length}`);
+    setTimeout(() => {
+        createIndicators();
+        goToIndex(0);
+        console.log('🎠 Карусель товаров активирована');
+        console.log(`Всего товаров: ${cards.length}`);
+    }, 100);
 }
 
 // Экспорт функций для использования в других модулях

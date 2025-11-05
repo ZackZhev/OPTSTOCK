@@ -748,26 +748,65 @@ function initProductCarousel() {
         }
     });
 
-    // Поддержка свайпов для мобильных устройств
+    // Улучшенная поддержка свайпов для мобильных устройств
     let touchStartX = 0;
     let touchEndX = 0;
     let touchStartY = 0;
     let touchEndY = 0;
+    let isDragging = false;
+    let startTransform = 0;
 
     wrapper.addEventListener('touchstart', (e) => {
-        touchStartX = e.changedTouches[0].screenX;
-        touchStartY = e.changedTouches[0].screenY;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+        isDragging = true;
+
+        // Сохраняем текущее положение
+        const currentTransform = productsGrid.style.transform;
+        const match = currentTransform.match(/translateX\((.+)px\)/);
+        startTransform = match ? parseFloat(match[1]) : 0;
+
+        // Убираем плавность во время драга для отзывчивости
+        productsGrid.style.transition = 'none';
+
+        console.log('👆 Touch start');
     }, { passive: true });
 
+    wrapper.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+
+        touchEndX = e.touches[0].clientX;
+        touchEndY = e.touches[0].clientY;
+
+        const diffX = touchEndX - touchStartX;
+        const diffY = touchEndY - touchStartY;
+
+        // Если это горизонтальный свайп, двигаем карусель
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // Предотвращаем вертикальную прокрутку во время горизонтального свайпа
+            e.preventDefault();
+
+            // Применяем временное смещение с учетом текущей позиции
+            const newTransform = startTransform + diffX;
+            productsGrid.style.transform = `translateX(${newTransform}px)`;
+
+            console.log('👋 Swiping...');
+        }
+    }, { passive: false });
+
     wrapper.addEventListener('touchend', (e) => {
-        touchEndX = e.changedTouches[0].screenX;
-        touchEndY = e.changedTouches[0].screenY;
+        if (!isDragging) return;
+
+        isDragging = false;
+
+        // Возвращаем плавность
+        productsGrid.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
 
         const diffX = touchStartX - touchEndX;
         const diffY = touchStartY - touchEndY;
 
-        // Проверяем что это горизонтальный свайп (а не вертикальная прокрутка)
-        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        // Проверяем что это горизонтальный свайп
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 30) {
             if (diffX > 0) {
                 console.log('👈 Свайп влево - следующий слайд');
                 nextBtn.click();
@@ -775,6 +814,19 @@ function initProductCarousel() {
                 console.log('👉 Свайп вправо - предыдущий слайд');
                 prevBtn.click();
             }
+        } else {
+            // Если свайп слишком короткий, возвращаемся на текущую позицию
+            console.log('🔄 Возврат на текущую позицию');
+            updateCarousel();
+        }
+    }, { passive: true });
+
+    // Отмена драга при отмене касания
+    wrapper.addEventListener('touchcancel', (e) => {
+        if (isDragging) {
+            isDragging = false;
+            productsGrid.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+            updateCarousel();
         }
     }, { passive: true });
 

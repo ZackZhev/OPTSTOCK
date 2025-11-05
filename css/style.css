@@ -467,6 +467,34 @@ h1 {
     overflow: hidden;
     border-radius: 20px;
     width: 100%;
+    touch-action: pan-y pinch-zoom;
+    position: relative;
+}
+
+/* Визуальная подсказка для свайпа на мобильных */
+@media (max-width: 768px) {
+    .products-carousel-wrapper::after {
+        content: '👉 Свайп 👈';
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        opacity: 0;
+        animation: swipeHint 3s ease-in-out 1s;
+        pointer-events: none;
+        z-index: 100;
+    }
+
+    @keyframes swipeHint {
+        0%, 100% { opacity: 0; }
+        10%, 90% { opacity: 1; }
+    }
 }
 
 .products-grid {
@@ -475,6 +503,15 @@ h1 {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 5px;
     will-change: transform;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.products-grid:active {
+    cursor: grabbing;
 }
 
 /* Карточки товаров */

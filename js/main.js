@@ -612,7 +612,7 @@ function createFallingHearts() {
 }
 
 // ==========================================
-// КАРУСЕЛЬ ТОВАРОВ - ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА
+// КАРУСЕЛЬ ТОВАРОВ - ПРОСТАЯ ГОРИЗОНТАЛЬНАЯ ПРОКРУТКА
 // ==========================================
 function initProductCarousel() {
     const prevBtn = document.querySelector('.carousel-btn-prev');
@@ -621,117 +621,122 @@ function initProductCarousel() {
     const wrapper = document.querySelector('.products-carousel-wrapper');
     const indicatorsContainer = document.getElementById('carouselIndicators');
 
-    console.log('Инициализация горизонтальной карусели товаров...');
+    console.log('🎠 Инициализация карусели товаров...');
 
     if (!prevBtn || !nextBtn || !productsGrid || !wrapper) {
-        console.error('Элементы карусели не найдены!');
+        console.error('❌ Элементы карусели не найдены!');
         return;
     }
 
-    let currentIndex = 0;
-    const cards = productsGrid.querySelectorAll('.product-card');
+    let currentSlide = 0;
+    const cards = Array.from(productsGrid.querySelectorAll('.product-card'));
+    const totalCards = cards.length;
 
-    console.log(`Найдено карточек: ${cards.length}`);
+    console.log(`📦 Найдено карточек: ${totalCards}`);
 
-    // Получаем ширину одной карточки с отступом
-    function getCardWidth() {
-        if (cards.length > 0) {
-            const cardStyle = window.getComputedStyle(cards[0]);
-            const cardWidth = cards[0].offsetWidth;
-            const gap = 25; // из CSS
-            return cardWidth + gap;
-        }
-        return 365; // запасное значение
-    }
+    // Простая функция для перемещения карусели
+    function updateCarousel() {
+        // Получаем ширину одной карточки + gap
+        const cardWidth = cards[0].offsetWidth + 25; // 25px это gap из CSS
 
-    // Получаем количество видимых карточек
-    function getVisibleCards() {
-        const wrapperWidth = wrapper.offsetWidth;
-        const cardWidth = getCardWidth();
-        const visible = Math.floor(wrapperWidth / cardWidth);
-        console.log(`Видимых карточек: ${visible}, ширина wrapper: ${wrapperWidth}, ширина карточки: ${cardWidth}`);
-        return Math.max(1, visible);
-    }
+        // Вычисляем смещение
+        const offset = -currentSlide * cardWidth;
 
-    // Получаем максимальный индекс
-    function getMaxIndex() {
-        const visibleCards = getVisibleCards();
-        return Math.max(0, cards.length - visibleCards);
-    }
+        console.log(`📍 Слайд ${currentSlide}, смещение: ${offset}px`);
 
-    // Переход к карточке
-    function goToIndex(index) {
-        const maxIndex = getMaxIndex();
-        currentIndex = Math.max(0, Math.min(index, maxIndex));
-
-        const cardWidth = getCardWidth();
-        const offset = -currentIndex * cardWidth;
-
-        console.log(`Переход к индексу ${currentIndex}, offset: ${offset}px`);
-
+        // Применяем трансформацию
         productsGrid.style.transform = `translateX(${offset}px)`;
-        updateIndicators();
+
+        // Обновляем состояние кнопок
         updateButtons();
+        updateIndicators();
     }
 
-    // Создаем индикаторы
+    // Обновление состояния кнопок
+    function updateButtons() {
+        // Вычисляем сколько карточек влезает на экран
+        const wrapperWidth = wrapper.offsetWidth;
+        const cardWidth = cards[0].offsetWidth + 25;
+        const visibleCards = Math.floor(wrapperWidth / cardWidth);
+
+        // Определяем максимальный индекс (последняя видимая позиция)
+        const maxSlide = Math.max(0, totalCards - visibleCards);
+
+        console.log(`👁️ Видимых карточек: ${visibleCards}, макс. слайд: ${maxSlide}`);
+
+        // Отключаем/включаем кнопки
+        prevBtn.disabled = currentSlide <= 0;
+        nextBtn.disabled = currentSlide >= maxSlide;
+
+        // Визуальная обратная связь
+        prevBtn.style.opacity = prevBtn.disabled ? '0.3' : '1';
+        nextBtn.style.opacity = nextBtn.disabled ? '0.3' : '1';
+
+        console.log(`🔘 Prev: ${!prevBtn.disabled}, Next: ${!nextBtn.disabled}`);
+    }
+
+    // Создание индикаторов
     function createIndicators() {
         if (!indicatorsContainer) return;
 
         indicatorsContainer.innerHTML = '';
-        const visibleCards = getVisibleCards();
-        const totalPages = Math.max(1, Math.ceil(cards.length / visibleCards));
 
-        console.log(`Создание индикаторов: ${totalPages} страниц`);
+        const wrapperWidth = wrapper.offsetWidth;
+        const cardWidth = cards[0].offsetWidth + 25;
+        const visibleCards = Math.floor(wrapperWidth / cardWidth);
+        const totalSlides = Math.max(1, totalCards - visibleCards + 1);
 
-        for (let i = 0; i < totalPages; i++) {
-            const indicator = document.createElement('div');
-            indicator.className = 'carousel-indicator';
-            if (i === 0) indicator.classList.add('active');
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-indicator';
+            if (i === 0) dot.classList.add('active');
 
-            indicator.addEventListener('click', () => {
-                const newIndex = i * visibleCards;
-                goToIndex(newIndex);
+            dot.addEventListener('click', () => {
+                currentSlide = i;
+                updateCarousel();
             });
-            indicatorsContainer.appendChild(indicator);
+
+            indicatorsContainer.appendChild(dot);
         }
+
+        console.log(`🔵 Создано индикаторов: ${totalSlides}`);
     }
 
-    // Обновляем индикаторы
+    // Обновление индикаторов
     function updateIndicators() {
         if (!indicatorsContainer) return;
 
         const indicators = indicatorsContainer.querySelectorAll('.carousel-indicator');
-        const visibleCards = getVisibleCards();
-        const currentPage = Math.floor(currentIndex / visibleCards);
-
-        indicators.forEach((indicator, index) => {
-            indicator.classList.toggle('active', index === currentPage);
+        indicators.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
         });
     }
 
-    // Обновляем кнопки
-    function updateButtons() {
-        const maxIndex = getMaxIndex();
-        prevBtn.disabled = currentIndex <= 0;
-        nextBtn.disabled = currentIndex >= maxIndex;
-
-        console.log(`Кнопки: prev=${prevBtn.disabled}, next=${nextBtn.disabled}, currentIndex=${currentIndex}, maxIndex=${maxIndex}`);
-    }
-
-    // Обработчики кнопок
+    // КНОПКА НАЗАД
     prevBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('Клик назад');
-        const visibleCards = getVisibleCards();
-        goToIndex(currentIndex - visibleCards);
+        console.log('⬅️ Клик НАЗАД');
+
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateCarousel();
+        }
     });
 
+    // КНОПКА ВПЕРЕД
     nextBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        console.log('Клик вперед');
-        const visibleCards = getVisibleCards();
-        goToIndex(currentIndex + visibleCards);
+        console.log('➡️ Клик ВПЕРЕД');
+
+        const wrapperWidth = wrapper.offsetWidth;
+        const cardWidth = cards[0].offsetWidth + 25;
+        const visibleCards = Math.floor(wrapperWidth / cardWidth);
+        const maxSlide = Math.max(0, totalCards - visibleCards);
+
+        if (currentSlide < maxSlide) {
+            currentSlide++;
+            updateCarousel();
+        }
     });
 
     // Поддержка клавиатуры
@@ -743,45 +748,52 @@ function initProductCarousel() {
         }
     });
 
-    // Поддержка свайпов на touch устройствах
+    // Поддержка свайпов для мобильных устройств
     let touchStartX = 0;
     let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
 
     wrapper.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
 
     wrapper.addEventListener('touchend', (e) => {
         touchEndX = e.changedTouches[0].screenX;
-        const diff = touchStartX - touchEndX;
+        touchEndY = e.changedTouches[0].screenY;
 
-        if (Math.abs(diff) > 50) {
-            if (diff > 0) {
+        const diffX = touchStartX - touchEndX;
+        const diffY = touchStartY - touchEndY;
+
+        // Проверяем что это горизонтальный свайп (а не вертикальная прокрутка)
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                console.log('👈 Свайп влево - следующий слайд');
                 nextBtn.click();
             } else {
+                console.log('👉 Свайп вправо - предыдущий слайд');
                 prevBtn.click();
             }
         }
     }, { passive: true });
 
-    // Обработка изменения размера окна
+    // При изменении размера окна
     let resizeTimeout;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            console.log('Изменение размера окна, пересоздание карусели');
-            currentIndex = 0;
+            console.log('📐 Изменение размера окна');
             createIndicators();
-            goToIndex(0);
+            updateCarousel();
         }, 250);
     });
 
-    // Инициализация
+    // Инициализация через небольшую задержку
     setTimeout(() => {
         createIndicators();
-        goToIndex(0);
-        console.log('🎠 Карусель товаров активирована');
-        console.log(`Всего товаров: ${cards.length}`);
+        updateCarousel();
+        console.log('✅ Карусель активирована и готова к работе!');
     }, 100);
 }
 

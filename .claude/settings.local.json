@@ -13,7 +13,15 @@
       "Bash(git commit:*)",
       "Bash(if not exist images mkdir images)",
       "Bash(copy \"C:\\Users\\你好\\Desktop\\Optstockpic\\logo\\opi_stock_avatar.png\" \"C:\\Users\\你好\\Desktop\\opt-stock-project\\images\\logo.png\")",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "Bash(git push:*)",
+      "Bash(gh auth:*)",
+      "Bash(dir:*)",
+      "Bash(npm start)",
+      "Bash(cmd.exe /C \"taskkill /F /PID 5596\")",
+      "Bash(powershell -Command \"Stop-Process -Id 5596 -Force\")",
+      "Bash(git restore:*)",
+      "Bash(powershell -Command \"Stop-Process -Id 3356 -Force\")"
     ],
     "deny": [],
     "ask": []

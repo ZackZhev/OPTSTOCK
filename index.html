@@ -26,6 +26,220 @@
 
     <!-- Favicon (добавьте свою иконку) -->
     <link rel="icon" type="image/png" href="images/favicon.png" />
+    <style>
+      /* Стили для нового карусельного слайдера */
+      .slider-container {
+        position: relative;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 60px;
+      }
+
+      .slider-wrapper {
+        overflow: hidden;
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(212, 175, 199, 0.3);
+        background: white;
+      }
+
+      .slider-track {
+        display: flex;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .product-slide {
+        min-width: 100%;
+        padding: 40px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .product-slide-image {
+        width: 100%;
+        max-width: 400px;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-slide-emoji {
+        font-size: 120px;
+        margin-bottom: 25px;
+        filter: drop-shadow(0 5px 15px rgba(212, 175, 199, 0.3));
+      }
+
+      .product-slide-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: #d4afc7;
+        margin-bottom: 15px;
+      }
+
+      .product-slide-description {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .product-slide-details {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        color: #888;
+        line-height: 1.8;
+        max-width: 450px;
+      }
+
+      .product-slide-details h4 {
+        color: #d4afc7;
+        margin-bottom: 10px;
+        font-size: 18px;
+      }
+
+      .details-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #d4afc7 0%, #b88aa6 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        margin-top: 15px;
+        box-shadow: 0 4px 15px rgba(212, 175, 199, 0.4);
+      }
+
+      .slider-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: linear-gradient(135deg, #d4afc7 0%, #b88aa6 100%);
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 4px 20px rgba(212, 175, 199, 0.4);
+        transition: all 0.3s ease;
+        z-index: 10;
+      }
+
+      .slider-btn:hover {
+        transform: translateY(-50%) scale(1.1);
+        box-shadow: 0 6px 25px rgba(212, 175, 199, 0.6);
+      }
+
+      .slider-btn:active {
+        transform: translateY(-50%) scale(0.95);
+      }
+
+      .slider-btn-prev {
+        left: 0;
+      }
+
+      .slider-btn-next {
+        right: 0;
+      }
+
+      .slider-btn svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .slider-dots {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 30px;
+      }
+
+      .slider-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #e0e0e0;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 0;
+      }
+
+      .slider-dot.active {
+        background: linear-gradient(135deg, #d4afc7 0%, #b88aa6 100%);
+        width: 32px;
+        border-radius: 6px;
+      }
+
+      .slider-dot:hover {
+        background: #d4afc7;
+      }
+
+      /* Адаптивность */
+      @media (max-width: 768px) {
+        .slider-container {
+          padding: 0 50px;
+        }
+
+        .product-slide {
+          padding: 30px 20px;
+        }
+
+        .product-slide-image {
+          max-width: 300px;
+          height: 300px;
+        }
+
+        .product-slide-emoji {
+          font-size: 80px;
+        }
+
+        .product-slide-name {
+          font-size: 24px;
+        }
+
+        .slider-btn {
+          width: 40px;
+          height: 40px;
+        }
+
+        .slider-btn svg {
+          width: 20px;
+          height: 20px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .slider-container {
+          padding: 0 45px;
+        }
+
+        .product-slide-image {
+          max-width: 250px;
+          height: 250px;
+        }
+
+        .product-slide-emoji {
+          font-size: 60px;
+        }
+
+        .product-slide-name {
+          font-size: 20px;
+        }
+
+        .product-slide-description {
+          font-size: 14px;
+        }
+      }
+    </style>
   </head>
   <body>
     <!-- Декоративные элементы фона -->
@@ -124,166 +338,137 @@
       </section>
 
       <!-- Каталог косметики -->
-      <section class="catalog-section">
-        <div class="catalog-header">
-          <h2 class="catalog-title">Наш ассортимент</h2>
-          <p class="catalog-subtitle">
-            Широкий выбор косметики для вашей красоты
-          </p>
-        </div>
+<section class="catalog-section">
+  <div class="catalog-header">
+    <h2 class="catalog-title">Наш ассортимент</h2>
+    <p class="catalog-subtitle">
+      Широкий выбор косметики для вашей красоты
+    </p>
+  </div>
 
-        <div class="catalog-carousel">
-          <button
-            class="carousel-btn carousel-btn-prev"
-            aria-label="Предыдущий"
-          >
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-            </svg>
-          </button>
+  <div class="slider-container">
+    <button class="slider-btn slider-btn-prev" id="prevBtn" aria-label="Предыдущий товар">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+      </svg>
+    </button>
 
-          <div class="products-carousel-wrapper">
-            <div class="products-grid">
-              <div class="product-card" data-category="makeup">
-                <div class="product-icon">
-                  <img
-                    src="images/product1.jpg"
-                    alt="K-SECRET SEOUL 1988 Serum"
-                  />
-                </div>
-                <div class="product-name">K-SECRET SEOUL 1988 Serum</div>
-                <div class="product-description">
-                  антивозрастная сыворотка с ретинолом, липосомами и чёрным
-                  женьшенем. 30 мл
-                </div>
-                <div class="product-details">
-                  <h4>K-SECRET SEOUL 1988 Serum</h4>
-                  <p>
-                    Антивозрастная сыворотка с ретинолом, липосомами и чёрным
-                    женьшенем. 30 мл
-                  </p>
-                  <a
-                    href="https://www.instagram.com/opt_stock_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="details-badge details-badge-button"
-                    >Купить</a
-                  >
-                </div>
-              </div>
-
-              <div class="product-card" data-category="skincare">
-                <div class="product-icon">
-                  <img src="images/product2.jpg" alt="Желе-стики Mipeum" />
-                </div>
-                <div class="product-name">Желе-стики Mipeum</div>
-                <div class="product-description">Коллагеновые желе-стики</div>
-                <div class="product-details">
-                  <h4>Желе-стики Mipeum</h4>
-                  <p>
-                    🍊 ABC Juice Collagen Stick (оранжевый) — яблоко, свёкла,
-                    морковь + коллаген для здоровья кожи и энергии. 🌿 Aloe Vera
-                    Collagen Stick (зелёный) — алоэ вера + низкомолекулярный
-                    коллаген для увлажнения и восстановления кожи. 💜 Jeju
-                    Ellagene Stick (фиолетовый) — антивозрастный комплекс с
-                    антиоксидантами. ❤️ Pomegranate Collagen Stick (розовый) —
-                    гранат + коллаген для сияния кожи и женского здоровья.
-                  </p>
-                  <a
-                    href="https://www.instagram.com/opt_stock_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="details-badge details-badge-button"
-                    >Купить</a
-                  >
-                </div>
-              </div>
-
-              <div class="product-card" data-category="cleansing">
-                <div class="product-icon">
-                  <img src="images/product3.jpg" alt="Очищение" />
-                </div>
-                <div class="product-name">Очищение</div>
-                <div class="product-description">Мицеллярка, пенки</div>
-                <div class="product-details">
-                  <h4>Средства для очищения</h4>
-                  <p>
-                    Мицеллярная вода, пенки, гели и тоники для умывания. Бережно
-                    очищают кожу.
-                  </p>
-                  <span class="details-badge">Для всех типов кожи</span>
-                </div>
-              </div>
-
-              <div class="product-card" data-category="nails">
-                <div class="product-icon">💅</div>
-                <div class="product-name">Маникюр</div>
-                <div class="product-description">Лаки, базы, топы</div>
-                <div class="product-details">
-                  <h4>Продукты для маникюра</h4>
-                  <p>
-                    Лаки для ногтей, базовые и топовые покрытия, средства для
-                    укрепления ногтей.
-                  </p>
-                  <span class="details-badge">Профессиональная линия</span>
-                </div>
-              </div>
-
-              <div class="product-card" data-category="perfume">
-                <div class="product-icon">🌸</div>
-                <div class="product-name">Парфюмерия</div>
-                <div class="product-description">Духи, одеколоны</div>
-                <div class="product-details">
-                  <h4>Парфюмерия</h4>
-                  <p>
-                    Изысканные ароматы от мировых брендов. Духи, туалетная вода.
-                  </p>
-                  <span class="details-badge">Оригинальная продукция</span>
-                </div>
-              </div>
-
-              <div class="product-card" data-category="haircare">
-                <div class="product-icon">💆‍♀️</div>
-                <div class="product-name">Уход за волосами</div>
-                <div class="product-description">Шампуни, маски</div>
-                <div class="product-details">
-                  <h4>Уход за волосами</h4>
-                  <p>
-                    Профессиональные шампуни, кондиционеры, маски и сыворотки
-                    для волос.
-                  </p>
-                  <span class="details-badge">Салонный уход дома</span>
-                </div>
-              </div>
-
-              <div class="product-card" data-category="accessories">
-                <div class="product-icon">✨</div>
-                <div class="product-name">Аксессуары</div>
-                <div class="product-description">Кисти, спонжи, зеркала</div>
-                <div class="product-details">
-                  <h4>Аксессуары для макияжа</h4>
-                  <p>
-                    Профессиональные кисти для макияжа, спонжи, зеркала,
-                    косметички и органайзеры.
-                  </p>
-                  <span class="details-badge"
-                    >Профессиональные инструменты</span
-                  >
-                </div>
-              </div>
-            </div>
+    <div class="slider-wrapper">
+      <div class="slider-track" id="sliderTrack">
+        <!-- Слайд 1 -->
+        <div class="product-slide">
+          <img src="images/product1.jpg" alt="K-SECRET SEOUL 1988 Serum" class="product-slide-image" />
+          <div class="product-slide-name">K-SECRET SEOUL 1988 Serum</div>
+          <div class="product-slide-description">
+            Антивозрастная сыворотка с ретинолом, липосомами и чёрным женьшенем. 30 мл
           </div>
-
-          <button class="carousel-btn carousel-btn-next" aria-label="Следующий">
-            <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-              <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
-            </svg>
-          </button>
+          <div class="product-slide-details">
+            <h4>Премиальный уход</h4>
+            <p>
+              Инновационная формула с активными компонентами для комплексного омоложения кожи.
+            </p>
+            <span class="details-badge">Корейская косметика</span>
+          </div>
         </div>
 
-        <!-- Индикаторы прогресса -->
-        <div class="carousel-indicators" id="carouselIndicators"></div>
-      </section>
+        <!-- Слайд 2 -->
+        <div class="product-slide">
+          <img src="images/product2.jpg" alt="Крем для лица" class="product-slide-image" />
+          <div class="product-slide-name">Крем для лица</div>
+          <div class="product-slide-description">
+            Увлажнение, питание, защита
+          </div>
+          <div class="product-slide-details">
+            <h4>Ежедневный уход</h4>
+            <p>
+              Дневные и ночные кремы для разных типов кожи. Глубокое увлажнение и питание.
+            </p>
+            <span class="details-badge">Гипоаллергенно</span>
+          </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="product-slide">
+          <img src="images/product3.jpg" alt="Очищение" class="product-slide-image" />
+          <div class="product-slide-name">Очищение</div>
+          <div class="product-slide-description">Мицеллярка, пенки</div>
+          <div class="product-slide-details">
+            <h4>Средства для очищения</h4>
+            <p>
+              Мицеллярная вода, пенки, гели и тоники для умывания. Бережно очищают кожу.
+            </p>
+            <span class="details-badge">Для всех типов кожи</span>
+          </div>
+        </div>
+
+        <!-- Слайд 4 -->
+        <div class="product-slide">
+          <div class="product-slide-emoji">💅</div>
+          <div class="product-slide-name">Маникюр</div>
+          <div class="product-slide-description">Лаки, базы, топы</div>
+          <div class="product-slide-details">
+            <h4>Продукты для маникюра</h4>
+            <p>
+              Лаки для ногтей, базовые и топовые покрытия, средства для укрепления ногтей.
+            </p>
+            <span class="details-badge">Профессиональная линия</span>
+          </div>
+        </div>
+
+        <!-- Слайд 5 -->
+        <div class="product-slide">
+          <div class="product-slide-emoji">🌸</div>
+          <div class="product-slide-name">Парфюмерия</div>
+          <div class="product-slide-description">Духи, одеколоны</div>
+          <div class="product-slide-details">
+            <h4>Парфюмерия</h4>
+            <p>
+              Изысканные ароматы от мировых брендов. Духи, туалетная вода.
+            </p>
+            <span class="details-badge">Оригинальная продукция</span>
+          </div>
+        </div>
+
+        <!-- Слайд 6 -->
+        <div class="product-slide">
+          <div class="product-slide-emoji">💆‍♀️</div>
+          <div class="product-slide-name">Уход за волосами</div>
+          <div class="product-slide-description">Шампуни, маски</div>
+          <div class="product-slide-details">
+            <h4>Уход за волосами</h4>
+            <p>
+              Профессиональные шампуни, кондиционеры, маски и сыворотки для волос.
+            </p>
+            <span class="details-badge">Салонный уход дома</span>
+          </div>
+        </div>
+
+        <!-- Слайд 7 -->
+        <div class="product-slide">
+          <div class="product-slide-emoji">✨</div>
+          <div class="product-slide-name">Аксессуары</div>
+          <div class="product-slide-description">Кисти, спонжи, зеркала</div>
+          <div class="product-slide-details">
+            <h4>Аксессуары для макияжа</h4>
+            <p>
+              Профессиональные кисти для макияжа, спонжи, зеркала, косметички и органайзеры.
+            </p>
+            <span class="details-badge">Профессиональные инструменты</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="slider-btn slider-btn-next" id="nextBtn" aria-label="Следующий товар">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Индикаторы -->
+  <div class="slider-dots" id="sliderDots"></div>
+</section>
 
       <!-- Социальные сети -->
       <section class="social-section">
@@ -351,5 +536,80 @@
     <!-- Подключение JavaScript -->
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- JavaScript для слайдера -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const sliderTrack = document.getElementById('sliderTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('sliderDots');
+        const slides = document.querySelectorAll('.product-slide');
+        
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Создаем точки-индикаторы
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.createElement('button');
+          dot.classList.add('slider-dot');
+          if (i === 0) dot.classList.add('active');
+          dot.setAttribute('aria-label', `Перейти к слайду ${i + 1}`);
+          dot.addEventListener('click', () => goToSlide(i));
+          dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.slider-dot');
+
+        function updateSlider() {
+          sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
+          
+          // Обновляем активную точку
+          dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentSlide);
+          });
+        }
+
+        function goToSlide(index) {
+          currentSlide = index;
+          updateSlider();
+        }
+
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % totalSlides;
+          updateSlider();
+        }
+
+        function prevSlide() {
+          currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+          updateSlider();
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        // Поддержка свайпа на мобильных устройствах
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        sliderTrack.addEventListener('touchstart', (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        });
+
+        sliderTrack.addEventListener('touchend', (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          handleSwipe();
+        });
+
+        function handleSwipe() {
+          if (touchEndX < touchStartX - 50) {
+            nextSlide();
+          }
+          if (touchEndX > touchStartX + 50) {
+            prevSlide();
+          }
+        }
+      });
+    </script>
   </body>
 </html>

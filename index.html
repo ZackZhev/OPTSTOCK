@@ -74,7 +74,7 @@
       }
 
       .product-slide-name {
-        font-family: 'Playfair Display', serif;
+        font-family: "Playfair Display", serif;
         font-size: 28px;
         font-weight: 700;
         color: #000000;
@@ -82,14 +82,14 @@
       }
 
       .product-slide-description {
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-size: 16px;
         color: #666;
         margin-bottom: 20px;
       }
 
       .product-slide-details {
-        font-family: 'Montserrat', sans-serif;
+        font-family: "Montserrat", sans-serif;
         font-size: 14px;
         color: #888;
         line-height: 1.8;
@@ -348,138 +348,226 @@
       </section>
 
       <!-- Каталог косметики -->
-<section class="catalog-section">
-  <div class="catalog-header">
-    <h2 class="catalog-title">Наш ассортимент</h2>
-    <p class="catalog-subtitle">
-      Широкий выбор косметики для вашей красоты
-    </p>
-  </div>
-
-  <div class="slider-container">
-    <button class="slider-btn slider-btn-prev" id="prevBtn" aria-label="Предыдущий товар">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-      </svg>
-    </button>
-
-    <div class="slider-wrapper">
-      <div class="slider-track" id="sliderTrack">
-        <!-- Слайд 1 -->
-        <div class="product-slide">
-          <img src="images/product1.jpg" alt="K-SECRET SEOUL 1988 Serum" class="product-slide-image" />
-          <div class="product-slide-name">K-SECRET SEOUL 1988 Serum</div>
-          <div class="product-slide-description">
-            Антивозрастная сыворотка с ретинолом, липосомами и чёрным женьшенем. 30 мл
-          </div>
-          <div class="product-slide-details">
-            <h4>Премиальный уход</h4>
-            <p>
-              Инновационная формула с активными компонентами для комплексного омоложения кожи.
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
-          </div>
+      <section class="catalog-section">
+        <div class="catalog-header">
+          <h2 class="catalog-title">Наш ассортимент</h2>
+          <p class="catalog-subtitle">
+            Широкий выбор косметики для вашей красоты
+          </p>
         </div>
 
-        <!-- Слайд 2 -->
-        <div class="product-slide">
-          <img src="images/product2.jpg" alt="ABC Juice Collagen Stick" class="product-slide-image" />
-          <div class="product-slide-name">Коллагеновый стик с соком ABC</div>
-          <div class="product-slide-description">
-            Увлажнение, питание, защита
-          </div>
-          <div class="product-slide-details">
-            <h4>Ежедневный уход</h4>
-            <p>
-              улучшает состояние кожи, укрепляет сосуды, поддерживает детокс-эффект и обмен веществ.
+        <div class="slider-container">
+          <button
+            class="slider-btn slider-btn-prev"
+            id="prevBtn"
+            aria-label="Предыдущий товар"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+            </svg>
+          </button>
 
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
+          <div class="slider-wrapper">
+            <div class="slider-track" id="sliderTrack">
+              <!-- Слайд 1 -->
+              <div class="product-slide">
+                <img
+                  src="images/product1.png"
+                  alt="K-SECRET SEOUL 1988 Serum"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">K-SECRET SEOUL 1988 Serum</div>
+                <div class="product-slide-description">
+                  Антивозрастная сыворотка с ретинолом, липосомами и чёрным
+                  женьшенем. 30 мл
+                </div>
+                <div class="product-slide-details">
+                  <h4>Премиальный уход</h4>
+                  <p>
+                    Инновационная формула с активными компонентами для
+                    комплексного омоложения кожи.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+
+              <!-- Слайд 2 -->
+              <div class="product-slide">
+                <img
+                  src="images/product2.png"
+                  alt="ABC Juice Collagen Stick"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">
+                  Коллагеновый стик с соком ABC
+                </div>
+                <div class="product-slide-description">
+                  Увлажнение, питание, защита
+                </div>
+                <div class="product-slide-details">
+                  <h4>Ежедневный уход</h4>
+                  <p>
+                    улучшает состояние кожи, укрепляет сосуды, поддерживает
+                    детокс-эффект и обмен веществ.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+
+              <!-- Слайд 3 -->
+              <div class="product-slide">
+                <img
+                  src="images/product3.png"
+                  alt="Очищение"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">Очищение</div>
+                <div class="product-slide-description">Мицеллярка, пенки</div>
+                <div class="product-slide-details">
+                  <h4>Средства для очищения</h4>
+                  <p>
+                    Мицеллярная вода, пенки, гели и тоники для умывания. Бережно
+                    очищают кожу.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+
+              <!-- Слайд 4 -->
+              <div class="product-slide">
+                <img
+                  src="images/product4.png"
+                  alt="Очищение"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">Маникюр</div>
+                <div class="product-slide-description">Лаки, базы, топы</div>
+                <div class="product-slide-details">
+                  <h4>Продукты для маникюра</h4>
+                  <p>
+                    Лаки для ногтей, базовые и топовые покрытия, средства для
+                    укрепления ногтей.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+
+              <!-- Слайд 5 -->
+              <div class="product-slide">
+                <img
+                  src="images/product5.png"
+                  alt="Очищение"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">Парфюмерия</div>
+                <div class="product-slide-description">Духи, одеколоны</div>
+                <div class="product-slide-details">
+                  <h4>Парфюмерия</h4>
+                  <p>
+                    Изысканные ароматы от мировых брендов. Духи, туалетная вода.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+
+              <!-- Слайд 6 -->
+              <div class="product-slide">
+                <img
+                  src="images/product6.png"
+                  alt="Очищение"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">Уход за волосами</div>
+                <div class="product-slide-description">Шампуни, маски</div>
+                <div class="product-slide-details">
+                  <h4>Уход за волосами</h4>
+                  <p>
+                    Профессиональные шампуни, кондиционеры, маски и сыворотки
+                    для волос.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+
+              <!-- Слайд 7 -->
+              <div class="product-slide">
+                <img
+                  src="images/product7.png"
+                  alt="Очищение"
+                  class="product-slide-image"
+                />
+                <div class="product-slide-name">Аксессуары</div>
+                <div class="product-slide-description">
+                  Кисти, спонжи, зеркала
+                </div>
+                <div class="product-slide-details">
+                  <h4>Аксессуары для макияжа</h4>
+                  <p>
+                    Профессиональные кисти для макияжа, спонжи, зеркала,
+                    косметички и органайзеры.
+                  </p>
+                  <a
+                    href="https://wa.me/996556525111"
+                    class="details-badge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    >Купить</a
+                  >
+                </div>
+              </div>
+            </div>
           </div>
+
+          <button
+            class="slider-btn slider-btn-next"
+            id="nextBtn"
+            aria-label="Следующий товар"
+          >
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
+            </svg>
+          </button>
         </div>
 
-        <!-- Слайд 3 -->
-        <div class="product-slide">
-          <img src="images/product3.jpg" alt="Очищение" class="product-slide-image" />
-          <div class="product-slide-name">Очищение</div>
-          <div class="product-slide-description">Мицеллярка, пенки</div>
-          <div class="product-slide-details">
-            <h4>Средства для очищения</h4>
-            <p>
-              Мицеллярная вода, пенки, гели и тоники для умывания. Бережно очищают кожу.
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
-          </div>
-        </div>
-
-        <!-- Слайд 4 -->
-        <div class="product-slide">
-          <img src="images/product4.jpg" alt="Очищение" class="product-slide-image" />
-          <div class="product-slide-name">Маникюр</div>
-          <div class="product-slide-description">Лаки, базы, топы</div>
-          <div class="product-slide-details">
-            <h4>Продукты для маникюра</h4>
-            <p>
-              Лаки для ногтей, базовые и топовые покрытия, средства для укрепления ногтей.
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
-          </div>
-        </div>
-
-        <!-- Слайд 5 -->
-        <div class="product-slide">
-          <img src="images/product5.jpg" alt="Очищение" class="product-slide-image" />
-          <div class="product-slide-name">Парфюмерия</div>
-          <div class="product-slide-description">Духи, одеколоны</div>
-          <div class="product-slide-details">
-            <h4>Парфюмерия</h4>
-            <p>
-              Изысканные ароматы от мировых брендов. Духи, туалетная вода.
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
-          </div>
-        </div>
-
-        <!-- Слайд 6 -->
-        <div class="product-slide">
-          <img src="images/product6.jpg" alt="Очищение" class="product-slide-image" />
-          <div class="product-slide-name">Уход за волосами</div>
-          <div class="product-slide-description">Шампуни, маски</div>
-          <div class="product-slide-details">
-            <h4>Уход за волосами</h4>
-            <p>
-              Профессиональные шампуни, кондиционеры, маски и сыворотки для волос.
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
-          </div>
-        </div>
-
-        <!-- Слайд 7 -->
-        <div class="product-slide">
-          <img src="images/product7.jpg" alt="Очищение" class="product-slide-image" />
-          <div class="product-slide-name">Аксессуары</div>
-          <div class="product-slide-description">Кисти, спонжи, зеркала</div>
-          <div class="product-slide-details">
-            <h4>Аксессуары для макияжа</h4>
-            <p>
-              Профессиональные кисти для макияжа, спонжи, зеркала, косметички и органайзеры.
-            </p>
-            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <button class="slider-btn slider-btn-next" id="nextBtn" aria-label="Следующий товар">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z" />
-      </svg>
-    </button>
-  </div>
-
-  <!-- Индикаторы -->
-  <div class="slider-dots" id="sliderDots"></div>
-</section>
+        <!-- Индикаторы -->
+        <div class="slider-dots" id="sliderDots"></div>
+      </section>
 
       <!-- Социальные сети -->
       <section class="social-section">
@@ -550,34 +638,34 @@
 
     <!-- JavaScript для слайдера -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const sliderTrack = document.getElementById('sliderTrack');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dotsContainer = document.getElementById('sliderDots');
-        const slides = document.querySelectorAll('.product-slide');
-        
+      document.addEventListener("DOMContentLoaded", function () {
+        const sliderTrack = document.getElementById("sliderTrack");
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const dotsContainer = document.getElementById("sliderDots");
+        const slides = document.querySelectorAll(".product-slide");
+
         let currentSlide = 0;
         const totalSlides = slides.length;
 
         // Создаем точки-индикаторы
         for (let i = 0; i < totalSlides; i++) {
-          const dot = document.createElement('button');
-          dot.classList.add('slider-dot');
-          if (i === 0) dot.classList.add('active');
-          dot.setAttribute('aria-label', `Перейти к слайду ${i + 1}`);
-          dot.addEventListener('click', () => goToSlide(i));
+          const dot = document.createElement("button");
+          dot.classList.add("slider-dot");
+          if (i === 0) dot.classList.add("active");
+          dot.setAttribute("aria-label", `Перейти к слайду ${i + 1}`);
+          dot.addEventListener("click", () => goToSlide(i));
           dotsContainer.appendChild(dot);
         }
 
-        const dots = document.querySelectorAll('.slider-dot');
+        const dots = document.querySelectorAll(".slider-dot");
 
         function updateSlider() {
           sliderTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-          
+
           // Обновляем активную точку
           dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentSlide);
+            dot.classList.toggle("active", index === currentSlide);
           });
         }
 
@@ -596,18 +684,18 @@
           updateSlider();
         }
 
-        prevBtn.addEventListener('click', prevSlide);
-        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener("click", prevSlide);
+        nextBtn.addEventListener("click", nextSlide);
 
         // Поддержка свайпа на мобильных устройствах
         let touchStartX = 0;
         let touchEndX = 0;
 
-        sliderTrack.addEventListener('touchstart', (e) => {
+        sliderTrack.addEventListener("touchstart", (e) => {
           touchStartX = e.changedTouches[0].screenX;
         });
 
-        sliderTrack.addEventListener('touchend', (e) => {
+        sliderTrack.addEventListener("touchend", (e) => {
           touchEndX = e.changedTouches[0].screenX;
           handleSwipe();
         });

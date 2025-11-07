@@ -21,7 +21,8 @@
       "Bash(cmd.exe /C \"taskkill /F /PID 5596\")",
       "Bash(powershell -Command \"Stop-Process -Id 5596 -Force\")",
       "Bash(git restore:*)",
-      "Bash(powershell -Command \"Stop-Process -Id 3356 -Force\")"
+      "Bash(powershell -Command \"Stop-Process -Id 3356 -Force\")",
+      "Bash(start https://github.com/ZackZhev/OPTSTOCK/settings/pages)"
     ],
     "deny": [],
     "ask": []

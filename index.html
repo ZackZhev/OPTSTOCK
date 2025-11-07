@@ -38,8 +38,8 @@
       .slider-wrapper {
         overflow: hidden;
         border-radius: 20px;
-        box-shadow: 0 10px 40px rgba(212, 175, 199, 0.3);
-        background: white;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        background: #000000;
       }
 
       .slider-track {
@@ -77,49 +77,57 @@
         font-family: 'Playfair Display', serif;
         font-size: 28px;
         font-weight: 700;
-        color: #d4afc7;
+        color: #ffffff;
         margin-bottom: 15px;
       }
 
       .product-slide-description {
         font-family: 'Montserrat', sans-serif;
         font-size: 16px;
-        color: #666;
+        color: #ffffff;
         margin-bottom: 20px;
       }
 
       .product-slide-details {
         font-family: 'Montserrat', sans-serif;
         font-size: 14px;
-        color: #888;
+        color: #e0e0e0;
         line-height: 1.8;
         max-width: 450px;
       }
 
       .product-slide-details h4 {
-        color: #d4afc7;
+        color: #ffffff;
         margin-bottom: 10px;
         font-size: 18px;
       }
 
       .details-badge {
         display: inline-block;
-        background: linear-gradient(135deg, #d4afc7 0%, #b88aa6 100%);
-        color: white;
-        padding: 8px 20px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        margin-top: 15px;
-        box-shadow: 0 4px 15px rgba(212, 175, 199, 0.4);
+        background: #ffffff;
+        color: #000000;
+        padding: 12px 30px;
+        border-radius: 25px;
+        font-size: 15px;
+        font-weight: 700;
+        margin-top: 20px;
+        box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .details-badge:hover {
+        background: #f0f0f0;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.5);
       }
 
       .slider-btn {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        background: linear-gradient(135deg, #d4afc7 0%, #b88aa6 100%);
-        border: none;
+        background: #000000;
+        border: 2px solid #ffffff;
         width: 50px;
         height: 50px;
         border-radius: 50%;
@@ -128,14 +136,15 @@
         align-items: center;
         justify-content: center;
         color: white;
-        box-shadow: 0 4px 20px rgba(212, 175, 199, 0.4);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
         transition: all 0.3s ease;
         z-index: 10;
       }
 
       .slider-btn:hover {
         transform: translateY(-50%) scale(1.1);
-        box-shadow: 0 6px 25px rgba(212, 175, 199, 0.6);
+        background: #1a1a1a;
+        box-shadow: 0 6px 25px rgba(255, 255, 255, 0.3);
       }
 
       .slider-btn:active {
@@ -166,7 +175,7 @@
         width: 12px;
         height: 12px;
         border-radius: 50%;
-        background: #e0e0e0;
+        background: #666666;
         border: none;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -174,13 +183,13 @@
       }
 
       .slider-dot.active {
-        background: linear-gradient(135deg, #d4afc7 0%, #b88aa6 100%);
+        background: #000000;
         width: 32px;
         border-radius: 6px;
       }
 
       .slider-dot:hover {
-        background: #d4afc7;
+        background: #333333;
       }
 
       /* Адаптивность */
@@ -367,7 +376,7 @@
             <p>
               Инновационная формула с активными компонентами для комплексного омоложения кожи.
             </p>
-            <span class="details-badge">Корейская косметика</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
 
@@ -383,7 +392,7 @@
             <p>
               Дневные и ночные кремы для разных типов кожи. Глубокое увлажнение и питание.
             </p>
-            <span class="details-badge">Гипоаллергенно</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
 
@@ -397,7 +406,7 @@
             <p>
               Мицеллярная вода, пенки, гели и тоники для умывания. Бережно очищают кожу.
             </p>
-            <span class="details-badge">Для всех типов кожи</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
 
@@ -411,7 +420,7 @@
             <p>
               Лаки для ногтей, базовые и топовые покрытия, средства для укрепления ногтей.
             </p>
-            <span class="details-badge">Профессиональная линия</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
 
@@ -425,7 +434,7 @@
             <p>
               Изысканные ароматы от мировых брендов. Духи, туалетная вода.
             </p>
-            <span class="details-badge">Оригинальная продукция</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
 
@@ -439,7 +448,7 @@
             <p>
               Профессиональные шампуни, кондиционеры, маски и сыворотки для волос.
             </p>
-            <span class="details-badge">Салонный уход дома</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
 
@@ -453,7 +462,7 @@
             <p>
               Профессиональные кисти для макияжа, спонжи, зеркала, косметички и органайзеры.
             </p>
-            <span class="details-badge">Профессиональные инструменты</span>
+            <a href="https://wa.me/996556525111" class="details-badge" target="_blank" rel="noopener noreferrer">Купить</a>
           </div>
         </div>
       </div>

@@ -27,6 +27,29 @@
     <!-- Favicon (добавьте свою иконку) -->
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <style>
+      /* Стили анкеты*/
+.opt-fab {
+    background:#111; color:#fff; border:none; padding:14px 20px;
+    border-radius:999px; cursor:pointer; font-size:16px; font-weight:600;
+  }
+  .opt-fab:hover { opacity:.9 }
+
+  .opt-modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.5);
+    display:none; align-items:center; justify-content:center; z-index:10000; }
+  .opt-modal { width:min(680px,92vw); max-height:86vh; overflow:auto; background:#fff;
+    border-radius:16px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,.25); font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  .opt-title { font-size:20px; font-weight:700; margin-bottom:8px; }
+  .opt-sub { font-size:14px; color:#6b7280; margin-bottom:16px; }
+  .opt-row { margin-bottom:14px; }
+  .opt-label { font-weight:600; font-size:14px; margin-bottom:6px; display:block; }
+  .opt-input, .opt-textarea { width:100%; border:1px solid #ddd; border-radius:10px; padding:10px 12px; font-size:14px; }
+  .opt-checkwrap { display:flex; flex-wrap:wrap; gap:10px; }
+  .opt-chip { border:1px solid #ddd; border-radius:999px; padding:6px 10px; font-size:14px; cursor:pointer; display:flex; align-items:center; gap:6px; }
+  .opt-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:20px; }
+  .opt-btn { border:none; padding:12px 16px; border-radius:10px; font-weight:600; cursor:pointer; }
+  .opt-btn.secondary { background:#eee; }
+  .opt-btn.primary { background:#111; color:#fff; }
+
       /* Стили для нового карусельного слайдера */
       .slider-container {
         position: relative;
@@ -252,6 +275,77 @@
     </style>
   </head>
   <body>
+        <!-- Декоративные анкеты -->
+    <div id="optFormBackdrop" class="opt-modal-backdrop" aria-hidden="true">
+  <div class="opt-modal" role="dialog" aria-labelledby="optFormTitle">
+    <div class="opt-title" id="optFormTitle">Анкета для подбора косметики</div>
+    <div class="opt-sub">Заполните поля — по нажатию «Отправить в WhatsApp» мы сформируем сообщение. В конце чата прикрепите 2–3 фото при дневном свете (без фильтров).</div>
+
+    <div class="opt-row">
+      <label class="opt-label" for="fNameAge">1. Имя и возраст</label>
+      <input class="opt-input" id="fNameAge" placeholder="Алина, 27" />
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label" for="fCity">2. Город (важен климат)</label>
+      <input class="opt-input" id="fCity" placeholder="Бишкек / Каракол / Нарын ..." />
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label">3. Тип кожи</label>
+      <div class="opt-checkwrap" id="fSkinType">
+        <label class="opt-chip"><input type="radio" name="skin" value="Жирная">Жирная</label>
+        <label class="opt-chip"><input type="radio" name="skin" value="Сухая">Сухая</label>
+        <label class="opt-chip"><input type="radio" name="skin" value="Комбинированная">Комбинированная</label>
+        <label class="opt-chip"><input type="radio" name="skin" value="Нормальная">Нормальная</label>
+        <label class="opt-chip"><input type="radio" name="skin" value="Чувствительная">Чувствительная</label>
+      </div>
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label">4. Что беспокоит</label>
+      <div class="opt-checkwrap" id="fConcerns">
+        <label class="opt-chip"><input type="checkbox" value="Прыщи">Прыщи</label>
+        <label class="opt-chip"><input type="checkbox" value="Чёрные точки">Чёрные точки</label>
+        <label class="opt-chip"><input type="checkbox" value="Пятна">Пятна</label>
+        <label class="opt-chip"><input type="checkbox" value="Поры">Поры</label>
+        <label class="opt-chip"><input type="checkbox" value="Морщины">Морщины</label>
+        <label class="opt-chip"><input type="checkbox" value="Сухость">Сухость</label>
+      </div>
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label" for="fRoutine">5. Сейчас используете</label>
+      <textarea class="opt-textarea" id="fRoutine" rows="3" placeholder="Коротко: чем умываетесь, есть ли крем, SPF"></textarea>
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label" for="fAllergy">6. Есть ли аллергии или кожные заболевания</label>
+      <textarea class="opt-textarea" id="fAllergy" rows="2" placeholder="Если нет — поставьте «–»"></textarea>
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label">7. Цель подбора</label>
+      <div class="opt-checkwrap" id="fGoals">
+        <label class="opt-chip"><input type="checkbox" value="Увлажнение">Увлажнение</label>
+        <label class="opt-chip"><input type="checkbox" value="Очистка">Очистка</label>
+        <label class="opt-chip"><input type="checkbox" value="Ровный тон">Ровный тон</label>
+        <label class="opt-chip"><input type="checkbox" value="Анти-акне">Анти-акне</label>
+        <label class="opt-chip"><input type="checkbox" value="Анти-эйдж">Анти-эйдж</label>
+      </div>
+    </div>
+
+    <div class="opt-row">
+      <label class="opt-label">8. Фото</label>
+      <small>Прикрепите 2–3 фото лица уже в открывшемся окне WhatsApp (дневной свет, без фильтров).</small>
+    </div>
+
+    <div class="opt-actions">
+      <button class="opt-btn secondary" id="optCloseForm">Отмена</button>
+      <button class="opt-btn primary" id="optSendWA">Отправить в WhatsApp</button>
+    </div>
+  </div>
+</div>
     <!-- Декоративные элементы фона -->
     <div class="bg-decoration bg-circle-1"></div>
     <div class="bg-decoration bg-circle-2"></div>
@@ -280,7 +374,7 @@
         </p>
         <div class="hours">Открыты ежедневно: 10:00 - 17:00</div>
       </section>
-
+<button id="optOpenForm" class="opt-fab">Анкета для подбора косметики</button>
       <!-- Кнопки действий -->
       <section class="action-section">
         <div class="buttons">
@@ -384,9 +478,8 @@
                 <div class="product-slide-details">
                   <h4>Омоложение и обновление</h4>
                   <p>
-                    Обновляет кожу и разглаживает морщины
-                    Выравнивает тон и делает кожу упругой,
-                    борется с воспалениями и придаёт сияние
+                    Обновляет кожу и разглаживает морщины Выравнивает тон и
+                    делает кожу упругой, борется с воспалениями и придаёт сияние
                   </p>
                   <a
                     href="https://wa.me/996556525111"
@@ -414,8 +507,9 @@
                 <div class="product-slide-details">
                   <h4>Ежедневный уход, вкусный и удобный</h4>
                   <p>
-                    Каждая порция содержит низкомолекулярный коллаген, который легко
-                    усваивается организмом, а также витамины и экстракты, усиливающие действие формулы.
+                    Каждая порция содержит низкомолекулярный коллаген, который
+                    легко усваивается организмом, а также витамины и экстракты,
+                    усиливающие действие формулы.
                   </p>
                   <a
                     href="https://wa.me/996556525111"
@@ -434,13 +528,18 @@
                   alt="Shiseido Fino Premium Touch Hair Mask"
                   class="product-slide-image"
                 />
-                <div class="product-slide-name">Shiseido Fino Premium Touch Hair Mask</div>
-                <div class="product-slide-description">Восстанавливающая маска для волос</div>
+                <div class="product-slide-name">
+                  Shiseido Fino Premium Touch Hair Mask
+                </div>
+                <div class="product-slide-description">
+                  Восстанавливающая маска для волос
+                </div>
                 <div class="product-slide-details">
                   <h4>Уход для повреждённых, сухих и тусклых волос</h4>
                   <p>
                     Формула с шестью видами ухаживающих компонентов глубоко
-                    питает, восстанавливает структуру и придаёт блеск от корней до кончиков.
+                    питает, восстанавливает структуру и придаёт блеск от корней
+                    до кончиков.
                   </p>
                   <a
                     href="https://wa.me/996556525111"
@@ -460,12 +559,12 @@
                   class="product-slide-image"
                 />
                 <div class="product-slide-name">Honey Deep Moist Treatment</div>
-                <div class="product-slide-description">Шампунь и бальзам для волос</div>
+                <div class="product-slide-description">
+                  Шампунь и бальзам для волос
+                </div>
                 <div class="product-slide-details">
                   <h4>Скоро..</h4>
-                  <p>
-                    Скоро..
-                  </p>
+                  <p>Скоро..</p>
                   <a
                     href="https://wa.me/996556525111"
                     class="details-badge"
@@ -710,5 +809,84 @@
         }
       });
     </script>
+    <script>
+(function(){
+  // ← ВАЖНО: ЗАМЕНИ НА СВОЙ НОМЕР (без +)
+  const WHATSAPP_NUMBER = "996707000000";
+
+  // UI
+  const openBtn = document.getElementById('optOpenForm');
+  const back = document.getElementById('optFormBackdrop');
+  const closeBtn = document.getElementById('optCloseForm');
+  const sendBtn = document.getElementById('optSendWA');
+
+  const fNameAge = document.getElementById('fNameAge');
+  const fCity = document.getElementById('fCity');
+  const fSkinTypeWrap = document.getElementById('fSkinType');
+  const fConcernsWrap = document.getElementById('fConcerns');
+  const fRoutine = document.getElementById('fRoutine');
+  const fAllergy = document.getElementById('fAllergy');
+  const fGoalsWrap = document.getElementById('fGoals');
+
+  function openModal(){ back.style.display='flex'; document.body.style.overflow='hidden'; }
+  function closeModal(){ back.style.display='none'; document.body.style.overflow=''; }
+
+  openBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  back.addEventListener('click', (e)=>{ if(e.target===back) closeModal(); });
+
+  function getCheckedText(container, type){
+    const sel = container.querySelectorAll(`input[type="${type}"]:checked`);
+    return Array.from(sel).map(el=>el.value).join(', ') || '—';
+  }
+  function getRadioText(container){
+    const el = container.querySelector('input[type="radio"]:checked');
+    return el ? el.value : '—';
+  }
+  function normalizeDash(text){
+    const t = (text||'').trim();
+    return (t==='-'||t==='—') ? '—' : (t||'—');
+  }
+  function buildMessage(){
+    const skin = getRadioText(fSkinTypeWrap);
+    const concerns = getCheckedText(fConcernsWrap, 'checkbox');
+    const goals = getCheckedText(fGoalsWrap, 'checkbox');
+    const nameAge = (fNameAge.value||'').trim() || '—';
+    const city = (fCity.value||'').trim() || '—';
+    const routine = (fRoutine.value||'').trim() || '—';
+    const allergy = normalizeDash(fAllergy.value);
+
+    return [
+      "Анкета для подбора косметики (OPTSTOCK)",
+      "",
+      `1) Имя и возраст: ${nameAge}`,
+      `2) Город: ${city}`,
+      `3) Тип кожи: ${skin}`,
+      `4) Что беспокоит: ${concerns}`,
+      `5) Сейчас использую: ${routine}`,
+      `6) Аллергии/заболевания: ${allergy}`,
+      `7) Цели: ${goals}`,
+      "",
+      "8) Фото: пришлю 2–3 снимка при дневном свете без фильтров."
+    ].join("\\n");
+  }
+  function isMobile(){
+    return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
+  }
+  sendBtn.addEventListener('click', function(){
+    if(!fNameAge.value.trim() || !fCity.value.trim()){
+      alert('Пожалуйста, укажите «Имя и возраст» и «Город».');
+      return;
+    }
+    const msg = encodeURIComponent(buildMessage());
+    const url = isMobile()
+      ? `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`
+      : `https://web.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${msg}`;
+
+    window.open(url, '_blank');
+    closeModal();
+  });
+})();
+</script>
   </body>
 </html>

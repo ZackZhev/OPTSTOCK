@@ -36,19 +36,20 @@
   }
 
   .opt-fab {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #000000 0%, #ffffff 50%, #000000 100%);
     color: #fff;
-    border: none;
+    border: 2px solid #000;
     padding: 18px 40px;
     border-radius: 999px;
     cursor: pointer;
     font-size: 18px;
     font-weight: 700;
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    animation: pulse 2s infinite;
+    animation: shake-pulse 1.5s infinite;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
   }
 
   .opt-fab::before {
@@ -70,24 +71,51 @@
   }
 
   .opt-fab:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
   }
 
   .opt-fab:active {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    transform: translateY(-1px) scale(0.98);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
   }
 
-  @keyframes pulse {
+  @keyframes shake-pulse {
     0% {
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      transform: translateX(0) scale(1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    10% {
+      transform: translateX(-2px) scale(1.02);
+    }
+    20% {
+      transform: translateX(2px) scale(1.02);
+    }
+    30% {
+      transform: translateX(-2px) scale(1.02);
+    }
+    40% {
+      transform: translateX(2px) scale(1.02);
     }
     50% {
-      box-shadow: 0 8px 35px rgba(102, 126, 234, 0.7), 0 0 0 8px rgba(102, 126, 234, 0.1);
+      transform: translateX(0) scale(1.05);
+      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.7), 0 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+    60% {
+      transform: translateX(-2px) scale(1.02);
+    }
+    70% {
+      transform: translateX(2px) scale(1.02);
+    }
+    80% {
+      transform: translateX(-2px) scale(1.02);
+    }
+    90% {
+      transform: translateX(2px) scale(1.02);
     }
     100% {
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+      transform: translateX(0) scale(1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     }
   }
 
@@ -340,7 +368,7 @@
 
     <div class="opt-row">
       <label class="opt-label" for="fNameAge">1. Имя и возраст</label>
-      <input class="opt-input" id="fNameAge" placeholder="Алина, 27" />
+      <input class="opt-input" id="fNameAge" placeholder="Алина, 24" />
     </div>
 
     <div class="opt-row">
@@ -434,7 +462,7 @@
 
       <!-- Кнопка анкеты -->
       <div class="opt-fab-container">
-        <button id="optOpenForm" class="opt-fab">✨ Анкета для подбора косметики</button>
+        <button id="optOpenForm" class="opt-fab">Анкета для подбора косметики</button>
       </div>
 
       <!-- Кнопки действий -->

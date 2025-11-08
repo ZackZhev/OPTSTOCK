@@ -28,11 +28,68 @@
     <link rel="icon" type="image/png" href="images/favicon.png" />
     <style>
       /* Стили анкеты*/
-.opt-fab {
-    background:#111; color:#fff; border:none; padding:14px 20px;
-    border-radius:999px; cursor:pointer; font-size:16px; font-weight:600;
+  .opt-fab-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
   }
-  .opt-fab:hover { opacity:.9 }
+
+  .opt-fab {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+    padding: 18px 40px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: pulse 2s infinite;
+  }
+
+  .opt-fab::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+  }
+
+  .opt-fab:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+
+  .opt-fab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+  }
+
+  .opt-fab:active {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+      box-shadow: 0 8px 35px rgba(102, 126, 234, 0.7), 0 0 0 8px rgba(102, 126, 234, 0.1);
+    }
+    100% {
+      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+  }
 
   .opt-modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.5);
     display:none; align-items:center; justify-content:center; z-index:10000; }
@@ -374,7 +431,12 @@
         </p>
         <div class="hours">Открыты ежедневно: 10:00 - 17:00</div>
       </section>
-<button id="optOpenForm" class="opt-fab">Анкета для подбора косметики</button>
+
+      <!-- Кнопка анкеты -->
+      <div class="opt-fab-container">
+        <button id="optOpenForm" class="opt-fab">✨ Анкета для подбора косметики</button>
+      </div>
+
       <!-- Кнопки действий -->
       <section class="action-section">
         <div class="buttons">
@@ -812,7 +874,7 @@
     <script>
 (function(){
   // ← ВАЖНО: ЗАМЕНИ НА СВОЙ НОМЕР (без +)
-  const WHATSAPP_NUMBER = "996707000000";
+  const WHATSAPP_NUMBER = "996707145125";
 
   // UI
   const openBtn = document.getElementById('optOpenForm');

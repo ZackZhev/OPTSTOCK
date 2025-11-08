@@ -36,20 +36,20 @@
   }
 
   .opt-fab {
-    background: linear-gradient(135deg, #000000 0%, #ffffff 50%, #000000 100%);
-    color: #fff;
-    border: 2px solid #000;
+    background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 50%, #ffd6e3 100%);
+    color: #333;
+    border: 2px solid #ffb3d9;
     padding: 18px 40px;
     border-radius: 999px;
     cursor: pointer;
     font-size: 18px;
     font-weight: 700;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 182, 217, 0.4);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
     animation: shake-pulse 1.5s infinite;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
   }
 
   .opt-fab::before {
@@ -72,18 +72,18 @@
 
   .opt-fab:hover {
     transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 12px 35px rgba(255, 182, 217, 0.6);
   }
 
   .opt-fab:active {
     transform: translateY(-1px) scale(0.98);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 20px rgba(255, 182, 217, 0.4);
   }
 
   @keyframes shake-pulse {
     0% {
       transform: translateX(0) scale(1);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 182, 217, 0.4);
     }
     10% {
       transform: translateX(-2px) scale(1.02);
@@ -99,7 +99,7 @@
     }
     50% {
       transform: translateX(0) scale(1.05);
-      box-shadow: 0 8px 35px rgba(0, 0, 0, 0.7), 0 0 0 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 35px rgba(255, 182, 217, 0.7), 0 0 0 8px rgba(255, 182, 217, 0.1);
     }
     60% {
       transform: translateX(-2px) scale(1.02);
@@ -115,7 +115,7 @@
     }
     100% {
       transform: translateX(0) scale(1);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 25px rgba(255, 182, 217, 0.4);
     }
   }
 
@@ -901,10 +901,9 @@
     </script>
     <script>
 (function(){
-  // ← ВАЖНО: ЗАМЕНИ НА СВОЙ НОМЕР (без +)
+  // 🔧 Укажи свой WhatsApp-номер без +
   const WHATSAPP_NUMBER = "996707145125";
 
-  // UI
   const openBtn = document.getElementById('optOpenForm');
   const back = document.getElementById('optFormBackdrop');
   const closeBtn = document.getElementById('optCloseForm');
@@ -918,6 +917,7 @@
   const fAllergy = document.getElementById('fAllergy');
   const fGoalsWrap = document.getElementById('fGoals');
 
+  // открыть/закрыть окно
   function openModal(){ back.style.display='flex'; document.body.style.overflow='hidden'; }
   function closeModal(){ back.style.display='none'; document.body.style.overflow=''; }
 
@@ -925,6 +925,7 @@
   closeBtn.addEventListener('click', closeModal);
   back.addEventListener('click', (e)=>{ if(e.target===back) closeModal(); });
 
+  // вспомогательные функции
   function getCheckedText(container, type){
     const sel = container.querySelectorAll(`input[type="${type}"]:checked`);
     return Array.from(sel).map(el=>el.value).join(', ') || '—';
@@ -937,6 +938,8 @@
     const t = (text||'').trim();
     return (t==='-'||t==='—') ? '—' : (t||'—');
   }
+
+  // 🧾 Форматирование текста для WhatsApp
   function buildMessage(){
     const skin = getRadioText(fSkinTypeWrap);
     const concerns = getCheckedText(fConcernsWrap, 'checkbox');
@@ -949,25 +952,43 @@
     return [
       "Анкета для подбора косметики (OPTSTOCK)",
       "",
-      `1) Имя и возраст: ${nameAge}`,
-      `2) Город: ${city}`,
-      `3) Тип кожи: ${skin}`,
-      `4) Что беспокоит: ${concerns}`,
-      `5) Сейчас использую: ${routine}`,
-      `6) Аллергии/заболевания: ${allergy}`,
-      `7) Цели: ${goals}`,
+      "1) Имя и возраст:",
+      nameAge,
       "",
-      "8) Фото: пришлю 2–3 снимка при дневном свете без фильтров."
-    ].join("\\n");
+      "2) Город (важен климат):",
+      city,
+      "",
+      "3) Тип кожи:",
+      skin,
+      "",
+      "4) Что беспокоит:",
+      concerns,
+      "",
+      "5) Сейчас использую:",
+      routine,
+      "",
+      "6) Аллергии / заболевания:",
+      allergy,
+      "",
+      "7) Цель подбора:",
+      goals,
+      "",
+      "8) Фото:",
+      "пришлю 2–3 снимка при дневном свете без фильтров."
+    ].join("\n");
   }
+
   function isMobile(){
     return /Android|iPhone|iPad|iPod|Opera Mini|IEMobile/i.test(navigator.userAgent);
   }
+
+  // кнопка "Отправить в WhatsApp"
   sendBtn.addEventListener('click', function(){
     if(!fNameAge.value.trim() || !fCity.value.trim()){
       alert('Пожалуйста, укажите «Имя и возраст» и «Город».');
       return;
     }
+
     const msg = encodeURIComponent(buildMessage());
     const url = isMobile()
       ? `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`

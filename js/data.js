@@ -22,8 +22,8 @@ const DataManager = {
         // Инициализация базовых данных если их нет
         if (!this.getData(this.KEYS.AUTH)) {
             this.setData(this.KEYS.AUTH, {
-                username: 'admin',
-                password: 'admin123', // В реальном проекте использовать хеширование!
+                username: 'admin-optstock$$$',
+                password: 'pass-optstock$$$', // В реальном проекте использовать хеширование!
                 isLoggedIn: false,
                 lastLogin: null
             });

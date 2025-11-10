@@ -1074,6 +1074,12 @@
           if (e.target === back) closeModal();
         });
 
+        // 🔗 Автоматическое открытие анкеты по ссылке
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get("anketa") === "open") {
+          openModal();
+        }
+
         // вспомогательные функции
         function getCheckedText(container, type) {
           const sel = container.querySelectorAll(

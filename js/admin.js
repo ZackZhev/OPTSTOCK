@@ -122,14 +122,13 @@ function setupNavigation() {
 function loadDashboardStats() {
     const products = DataManager.getProducts();
     const orders = DataManager.getOrders();
-    const visitors = DataManager.getVisitors();
-    const stats = DataManager.getStats();
+    const detailedStats = DataManager.getDetailedStats();
 
-    // Update stat cards
+    // Update stat cards with new detailed stats
     document.getElementById('statsProducts').textContent = products.length;
     document.getElementById('statsOrders').textContent = orders.length;
-    document.getElementById('statsVisitors').textContent = visitors.length;
-    document.getElementById('statsClicks').textContent = stats.totalClicks || 0;
+    document.getElementById('statsVisitors').textContent = detailedStats.uniqueSessions;
+    document.getElementById('statsClicks').textContent = detailedStats.totalButtonClicks;
 
     // Load recent orders
     loadRecentOrders();
@@ -512,39 +511,190 @@ function setupAnalytics() {
 }
 
 function loadAnalytics() {
-    const analytics = DataManager.getAnalytics();
-    const visitors = DataManager.getVisitors();
+    const detailedStats = DataManager.getDetailedStats();
 
-    // Clicks analytics
-    const clicksContainer = document.getElementById('clicksAnalytics');
-    if (Object.keys(analytics).length === 0) {
-        clicksContainer.innerHTML = '<p style="padding: 1rem; color: var(--text-light);">Нет данных о кликах</p>';
+    // Основная статистика
+    document.getElementById('totalPageViews').textContent = detailedStats.totalPageViews;
+    document.getElementById('totalProductViews').textContent = detailedStats.totalProductViews;
+    document.getElementById('totalButtonClicks').textContent = detailedStats.totalButtonClicks;
+    document.getElementById('conversionRate').textContent = detailedStats.conversionRate;
+
+    // Популярные товары
+    const popularProductsContainer = document.getElementById('popularProducts');
+    if (detailedStats.popularProducts.length === 0) {
+        popularProductsContainer.innerHTML = '<p style="padding: 1rem; color: var(--text-light);">Нет данных</p>';
     } else {
-        const sortedClicks = Object.entries(analytics).sort((a, b) => b[1] - a[1]);
-        clicksContainer.innerHTML = sortedClicks.map(([button, count]) => `
+        popularProductsContainer.innerHTML = detailedStats.popularProducts.map((product, index) => `
             <div class="analytics-item">
-                <span class="analytics-label">${button}</span>
-                <span class="analytics-value">${count}</span>
+                <div>
+                    <span class="analytics-label">${index + 1}. ${product.name}</span>
+                </div>
+                <span class="analytics-value">${product.views} 👁️</span>
             </div>
         `).join('');
     }
 
-    // Visitors analytics
+    // Клики по кнопкам
+    const clicksContainer = document.getElementById('clicksAnalytics');
+    if (detailedStats.topButtons.length === 0) {
+        clicksContainer.innerHTML = '<p style="padding: 1rem; color: var(--text-light);">Нет данных о кликах</p>';
+    } else {
+        clicksContainer.innerHTML = detailedStats.topButtons.map(button => `
+            <div class="analytics-item">
+                <span class="analytics-label">${button.name}</span>
+                <span class="analytics-value">${button.count}</span>
+            </div>
+        `).join('');
+    }
+
+    // Активность по часам
+    renderHourlyActivity(detailedStats.activityByHour);
+
+    // История посещений с фильтром по сессиям
+    const visitors = DataManager.getData(DataManager.KEYS.VISITORS) || [];
+    const uniqueSessions = DataManager.getUniqueSessions();
+
+    // Заполняем фильтр сессиями
+    const sessionFilter = document.getElementById('sessionFilter');
+    sessionFilter.innerHTML = '<option value="all">Все сессии</option>' +
+        uniqueSessions.map(sessionId => `
+            <option value="${sessionId}">Сессия ${sessionId.substring(0, 8)}...</option>
+        `).join('');
+
+    document.getElementById('sessionCount').textContent = `Всего сессий: ${uniqueSessions.length}`;
+
+    // Обработчик фильтра
+    sessionFilter.addEventListener('change', function() {
+        const selectedSession = this.value;
+        loadVisitorsBySession(selectedSession);
+    });
+
+    loadVisitorsBySession('all');
+
+    // Действия пользователей
+    loadUserActions();
+
+    // Просмотры страниц
+    loadPageViews();
+
+    // Статистика за период
+    const stats24h = detailedStats.timeBasedStats.last24h;
+    document.getElementById('period24hViews').textContent = stats24h.totalViews;
+    document.getElementById('period24hVisitors').textContent = stats24h.totalVisitors;
+    document.getElementById('period24hSessions').textContent = stats24h.uniqueSessions;
+}
+
+function renderHourlyActivity(activityByHour) {
+    const container = document.getElementById('hourlyActivity');
+    const maxActivity = Math.max(...activityByHour, 1);
+
+    const chartHTML = `
+        <div class="chart-bar">
+            ${activityByHour.map((count, hour) => {
+                const height = (count / maxActivity) * 100;
+                return `
+                    <div class="bar-item">
+                        <div class="bar" style="height: ${height}%">
+                            ${count > 0 ? `<span class="bar-value">${count}</span>` : ''}
+                        </div>
+                        <span class="bar-label">${hour}:00</span>
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    `;
+
+    container.innerHTML = chartHTML;
+}
+
+function loadVisitorsBySession(sessionId) {
+    const visitors = DataManager.getData(DataManager.KEYS.VISITORS) || [];
+    const filteredVisitors = sessionId === 'all'
+        ? visitors
+        : visitors.filter(v => v.sessionId === sessionId);
+
     const visitorsContainer = document.getElementById('visitorsAnalytics');
-    if (visitors.length === 0) {
+
+    if (filteredVisitors.length === 0) {
         visitorsContainer.innerHTML = '<p style="padding: 1rem; color: var(--text-light);">Нет данных о посетителях</p>';
     } else {
-        visitorsContainer.innerHTML = visitors.slice(-20).reverse().map(visitor => `
+        visitorsContainer.innerHTML = filteredVisitors.slice(-20).reverse().map(visitor => `
             <div class="analytics-item">
-                <div>
-                    <div class="analytics-label">${new Date(visitor.timestamp).toLocaleString('ru-RU')}</div>
-                    <div style="font-size: 0.75rem; color: var(--text-light);">
-                        ${visitor.userAgent ? visitor.userAgent.substring(0, 50) + '...' : 'Неизвестно'}
+                <div style="flex: 1;">
+                    <div class="analytics-label">
+                        <span class="action-badge visit">Посещение</span>
+                        ${new Date(visitor.timestamp).toLocaleString('ru-RU')}
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem;">
+                        Сессия: ${visitor.sessionId ? visitor.sessionId.substring(0, 12) + '...' : 'N/A'}<br>
+                        ${visitor.url || 'N/A'}<br>
+                        ${visitor.screenResolution || 'N/A'} • ${visitor.language || 'N/A'}
                     </div>
                 </div>
             </div>
         `).join('');
     }
+}
+
+function loadUserActions() {
+    const actions = DataManager.getUserActions();
+    const container = document.getElementById('userActions');
+
+    if (actions.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: var(--text-light);">Нет данных о действиях</p>';
+        return;
+    }
+
+    container.innerHTML = actions.slice(-30).reverse().map(action => {
+        const badgeClass = action.actionType.includes('Просмотр') ? 'view'
+                         : action.actionType.includes('Клик') ? 'click'
+                         : 'visit';
+
+        return `
+            <div class="analytics-item">
+                <div style="flex: 1;">
+                    <div class="analytics-label">
+                        <span class="action-badge ${badgeClass}">${action.actionType}</span>
+                        ${new Date(action.timestamp).toLocaleString('ru-RU')}
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-light); margin-top: 0.25rem;">
+                        ${action.data.productName ? `Товар: ${action.data.productName}` : ''}
+                        ${action.data.buttonName ? `Кнопка: ${action.data.buttonName}` : ''}
+                        ${action.data.pageName ? `Страница: ${action.data.pageName}` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function loadPageViews() {
+    const pageViews = DataManager.getPageViews();
+    const container = document.getElementById('pageViewsAnalytics');
+
+    if (pageViews.length === 0) {
+        container.innerHTML = '<p style="padding: 1rem; color: var(--text-light);">Нет данных о просмотрах</p>';
+        return;
+    }
+
+    // Группируем по страницам
+    const pageStats = {};
+    pageViews.forEach(view => {
+        if (!pageStats[view.pageName]) {
+            pageStats[view.pageName] = 0;
+        }
+        pageStats[view.pageName]++;
+    });
+
+    const sortedPages = Object.entries(pageStats)
+        .sort((a, b) => b[1] - a[1]);
+
+    container.innerHTML = sortedPages.map(([page, count]) => `
+        <div class="analytics-item">
+            <span class="analytics-label">${page}</span>
+            <span class="analytics-value">${count}</span>
+        </div>
+    `).join('');
 }
 
 // Data Management

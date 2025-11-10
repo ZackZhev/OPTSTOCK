@@ -201,14 +201,99 @@
 
             <!-- Analytics Section -->
             <section id="analytics" class="content-section">
+                <!-- Основная статистика -->
+                <div class="stats-summary">
+                    <div class="summary-card">
+                        <div class="summary-icon">📊</div>
+                        <div class="summary-content">
+                            <h4>Всего просмотров страниц</h4>
+                            <p id="totalPageViews" class="summary-value">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">👁️</div>
+                        <div class="summary-content">
+                            <h4>Просмотров товаров</h4>
+                            <p id="totalProductViews" class="summary-value">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">🖱️</div>
+                        <div class="summary-content">
+                            <h4>Кликов по кнопкам</h4>
+                            <p id="totalButtonClicks" class="summary-value">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-icon">🎯</div>
+                        <div class="summary-content">
+                            <h4>Конверсия</h4>
+                            <p id="conversionRate" class="summary-value">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Детальная аналитика -->
                 <div class="analytics-grid">
+                    <!-- Популярные товары -->
                     <div class="analytics-card">
-                        <h3>Статистика кликов по кнопкам</h3>
+                        <h3>🏆 Популярные товары</h3>
+                        <div id="popularProducts" class="analytics-list"></div>
+                    </div>
+
+                    <!-- Клики по кнопкам -->
+                    <div class="analytics-card">
+                        <h3>🖱️ Клики по кнопкам</h3>
                         <div id="clicksAnalytics" class="analytics-list"></div>
                     </div>
-                    <div class="analytics-card">
-                        <h3>История посещений</h3>
+
+                    <!-- Активность по часам -->
+                    <div class="analytics-card full-width">
+                        <h3>📈 Активность по часам</h3>
+                        <div id="hourlyActivity" class="chart-container"></div>
+                    </div>
+
+                    <!-- История посещений -->
+                    <div class="analytics-card full-width">
+                        <h3>👥 История посещений</h3>
+                        <div class="filters-bar">
+                            <select id="sessionFilter" class="filter-select">
+                                <option value="all">Все сессии</option>
+                            </select>
+                            <span id="sessionCount" class="filter-info"></span>
+                        </div>
                         <div id="visitorsAnalytics" class="analytics-list"></div>
+                    </div>
+
+                    <!-- Действия пользователей -->
+                    <div class="analytics-card full-width">
+                        <h3>📝 Последние действия пользователей</h3>
+                        <div id="userActions" class="analytics-list"></div>
+                    </div>
+
+                    <!-- Просмотры страниц -->
+                    <div class="analytics-card">
+                        <h3>📄 Просмотры страниц</h3>
+                        <div id="pageViewsAnalytics" class="analytics-list"></div>
+                    </div>
+
+                    <!-- Статистика за период -->
+                    <div class="analytics-card">
+                        <h3>⏰ Статистика за 24 часа</h3>
+                        <div id="timeBasedStats" class="stats-period">
+                            <div class="period-stat">
+                                <span class="period-label">Просмотры:</span>
+                                <span id="period24hViews" class="period-value">0</span>
+                            </div>
+                            <div class="period-stat">
+                                <span class="period-label">Посетители:</span>
+                                <span id="period24hVisitors" class="period-value">0</span>
+                            </div>
+                            <div class="period-stat">
+                                <span class="period-label">Уникальные сессии:</span>
+                                <span id="period24hSessions" class="period-value">0</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

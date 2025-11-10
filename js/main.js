@@ -28,10 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
     initProductCarousel();
 
     // ==========================================
-    // ТРЕКИНГ ПОСЕТИТЕЛЕЙ
+    // ТРЕКИНГ ПОСЕТИТЕЛЕЙ И ПРОСМОТРОВ
     // ==========================================
     if (typeof DataManager !== 'undefined') {
         DataManager.trackVisitor();
+        DataManager.trackPageView('Главная страница', {
+            title: document.title,
+            path: window.location.pathname
+        });
     }
 
     // ==========================================
@@ -203,15 +207,32 @@ document.addEventListener('DOMContentLoaded', function() {
             const buttonText = this.querySelector('.btn-text') ? this.querySelector('.btn-text').textContent : 'Unknown';
             console.log(`Клик по кнопке: ${buttonText}`);
 
-            // Трекинг в DataManager
+            // Расширенный трекинг в DataManager
             if (typeof DataManager !== 'undefined') {
-                DataManager.trackClick(buttonText);
+                DataManager.trackButtonClick(buttonText, {
+                    type: 'button',
+                    location: window.location.pathname
+                });
             }
+        });
+    });
 
-            // Здесь можно добавить Google Analytics или другую аналитику
-            // gtag('event', 'button_click', {
-            //     'button_name': buttonText
-            // });
+    // Трекинг кликов по социальным сетям
+    document.querySelectorAll('.social-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const socialType = this.href.includes('instagram') ? 'Instagram'
+                             : this.href.includes('tiktok') ? 'TikTok'
+                             : this.href.includes('wa.me') ? 'WhatsApp'
+                             : this.href.includes('2gis') ? '2GIS'
+                             : 'Социальная сеть';
+
+            if (typeof DataManager !== 'undefined') {
+                DataManager.trackButtonClick(`${socialType} кнопка`, {
+                    type: 'social',
+                    platform: socialType,
+                    url: this.href
+                });
+            }
         });
     });
 
@@ -430,6 +451,16 @@ function loadProductsFromDatabase() {
             }, 200);
 
             console.log(`Выбрана категория: ${category} - ${productName}`);
+
+            // Отслеживаем просмотр товара
+            if (typeof DataManager !== 'undefined') {
+                DataManager.trackProductView(product.id, productName);
+                DataManager.trackButtonClick('WhatsApp из карточки товара', {
+                    type: 'product',
+                    productName: productName,
+                    category: category
+                });
+            }
 
             // Вибрация на мобильных
             if ('vibrate' in navigator) {

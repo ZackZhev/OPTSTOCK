@@ -12,7 +12,11 @@ const DataManager = {
         IMAGES: 'optstock_images',
         SETTINGS: 'optstock_settings',
         ANALYTICS: 'optstock_analytics',
-        VISITORS: 'optstock_visitors'
+        VISITORS: 'optstock_visitors',
+        PAGE_VIEWS: 'optstock_page_views',
+        PRODUCT_VIEWS: 'optstock_product_views',
+        BUTTON_CLICKS: 'optstock_button_clicks',
+        USER_ACTIONS: 'optstock_user_actions'
     },
 
     // ==========================================
@@ -51,6 +55,22 @@ const DataManager = {
 
         if (!this.getData(this.KEYS.VISITORS)) {
             this.setData(this.KEYS.VISITORS, []);
+        }
+
+        if (!this.getData(this.KEYS.PAGE_VIEWS)) {
+            this.setData(this.KEYS.PAGE_VIEWS, []);
+        }
+
+        if (!this.getData(this.KEYS.PRODUCT_VIEWS)) {
+            this.setData(this.KEYS.PRODUCT_VIEWS, []);
+        }
+
+        if (!this.getData(this.KEYS.BUTTON_CLICKS)) {
+            this.setData(this.KEYS.BUTTON_CLICKS, []);
+        }
+
+        if (!this.getData(this.KEYS.USER_ACTIONS)) {
+            this.setData(this.KEYS.USER_ACTIONS, []);
         }
     },
 
@@ -275,10 +295,16 @@ const DataManager = {
 
     trackVisitor() {
         const visitors = this.getData(this.KEYS.VISITORS) || [];
+        const sessionId = this.getSessionId();
         visitors.push({
+            id: this.generateId(),
+            sessionId: sessionId,
             timestamp: new Date().toISOString(),
             userAgent: navigator.userAgent,
-            referrer: document.referrer
+            referrer: document.referrer,
+            url: window.location.href,
+            screenResolution: `${window.screen.width}x${window.screen.height}`,
+            language: navigator.language
         });
         this.setData(this.KEYS.VISITORS, visitors);
 
@@ -286,6 +312,298 @@ const DataManager = {
         const analytics = this.getAnalytics();
         analytics.totalVisitors = visitors.length;
         this.setData(this.KEYS.ANALYTICS, analytics);
+
+        // Логируем действие
+        this.logUserAction('Посещение сайта', { url: window.location.href });
+    },
+
+    // ==========================================
+    // РАСШИРЕННОЕ ОТСЛЕЖИВАНИЕ
+    // ==========================================
+
+    // Отслеживание просмотров страниц
+    trackPageView(pageName, pageData = {}) {
+        const pageViews = this.getData(this.KEYS.PAGE_VIEWS) || [];
+        const sessionId = this.getSessionId();
+        pageViews.push({
+            id: this.generateId(),
+            sessionId: sessionId,
+            pageName: pageName,
+            url: window.location.href,
+            timestamp: new Date().toISOString(),
+            data: pageData,
+            userAgent: navigator.userAgent,
+            referrer: document.referrer
+        });
+
+        // Ограничиваем количество записей (храним последние 1000)
+        if (pageViews.length > 1000) {
+            pageViews.shift();
+        }
+
+        this.setData(this.KEYS.PAGE_VIEWS, pageViews);
+        this.logUserAction('Просмотр страницы', { pageName, ...pageData });
+        return pageViews;
+    },
+
+    getPageViews() {
+        return this.getData(this.KEYS.PAGE_VIEWS) || [];
+    },
+
+    // Отслеживание просмотров товаров
+    trackProductView(productId, productName) {
+        const productViews = this.getData(this.KEYS.PRODUCT_VIEWS) || [];
+        const sessionId = this.getSessionId();
+        productViews.push({
+            id: this.generateId(),
+            sessionId: sessionId,
+            productId: productId,
+            productName: productName,
+            timestamp: new Date().toISOString(),
+            url: window.location.href
+        });
+
+        // Ограничиваем количество записей
+        if (productViews.length > 1000) {
+            productViews.shift();
+        }
+
+        this.setData(this.KEYS.PRODUCT_VIEWS, productViews);
+        this.logUserAction('Просмотр товара', { productId, productName });
+        return productViews;
+    },
+
+    getProductViews() {
+        return this.getData(this.KEYS.PRODUCT_VIEWS) || [];
+    },
+
+    // Получить популярные товары
+    getPopularProducts(limit = 10) {
+        const views = this.getProductViews();
+        const productCounts = {};
+
+        views.forEach(view => {
+            if (!productCounts[view.productId]) {
+                productCounts[view.productId] = {
+                    id: view.productId,
+                    name: view.productName,
+                    views: 0
+                };
+            }
+            productCounts[view.productId].views++;
+        });
+
+        return Object.values(productCounts)
+            .sort((a, b) => b.views - a.views)
+            .slice(0, limit);
+    },
+
+    // Отслеживание кликов по кнопкам
+    trackButtonClick(buttonName, buttonData = {}) {
+        const buttonClicks = this.getData(this.KEYS.BUTTON_CLICKS) || [];
+        const sessionId = this.getSessionId();
+        buttonClicks.push({
+            id: this.generateId(),
+            sessionId: sessionId,
+            buttonName: buttonName,
+            timestamp: new Date().toISOString(),
+            data: buttonData,
+            url: window.location.href
+        });
+
+        // Ограничиваем количество записей
+        if (buttonClicks.length > 1000) {
+            buttonClicks.shift();
+        }
+
+        this.setData(this.KEYS.BUTTON_CLICKS, buttonClicks);
+
+        // Обновляем старую аналитику для совместимости
+        this.trackClick(buttonName);
+        this.logUserAction('Клик по кнопке', { buttonName, ...buttonData });
+        return buttonClicks;
+    },
+
+    getButtonClicks() {
+        return this.getData(this.KEYS.BUTTON_CLICKS) || [];
+    },
+
+    // Получить статистику кликов по кнопкам
+    getButtonClicksStats() {
+        const clicks = this.getButtonClicks();
+        const stats = {};
+
+        clicks.forEach(click => {
+            if (!stats[click.buttonName]) {
+                stats[click.buttonName] = 0;
+            }
+            stats[click.buttonName]++;
+        });
+
+        return Object.entries(stats)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+    },
+
+    // Логирование действий пользователя
+    logUserAction(actionType, actionData = {}) {
+        const actions = this.getData(this.KEYS.USER_ACTIONS) || [];
+        const sessionId = this.getSessionId();
+        actions.push({
+            id: this.generateId(),
+            sessionId: sessionId,
+            actionType: actionType,
+            timestamp: new Date().toISOString(),
+            data: actionData,
+            url: window.location.href
+        });
+
+        // Ограничиваем количество записей (храним последние 500)
+        if (actions.length > 500) {
+            actions.shift();
+        }
+
+        this.setData(this.KEYS.USER_ACTIONS, actions);
+        return actions;
+    },
+
+    getUserActions() {
+        return this.getData(this.KEYS.USER_ACTIONS) || [];
+    },
+
+    // Получить действия по сессии
+    getActionsBySession(sessionId) {
+        const actions = this.getUserActions();
+        return actions.filter(action => action.sessionId === sessionId);
+    },
+
+    // Получить уникальные сессии
+    getUniqueSessions() {
+        const visitors = this.getData(this.KEYS.VISITORS) || [];
+        const sessions = new Set();
+        visitors.forEach(visitor => {
+            if (visitor.sessionId) {
+                sessions.add(visitor.sessionId);
+            }
+        });
+        return Array.from(sessions);
+    },
+
+    // Генерация или получение ID сессии
+    getSessionId() {
+        const SESSION_KEY = 'optstock_session_id';
+        let sessionId = sessionStorage.getItem(SESSION_KEY);
+
+        if (!sessionId) {
+            sessionId = this.generateId();
+            sessionStorage.setItem(SESSION_KEY, sessionId);
+        }
+
+        return sessionId;
+    },
+
+    // Получить статистику по времени
+    getTimeBasedStats(period = 'day') {
+        const now = new Date();
+        const pageViews = this.getPageViews();
+        const visitors = this.getData(this.KEYS.VISITORS) || [];
+
+        let startTime;
+        switch(period) {
+            case 'hour':
+                startTime = new Date(now - 60 * 60 * 1000);
+                break;
+            case 'day':
+                startTime = new Date(now - 24 * 60 * 60 * 1000);
+                break;
+            case 'week':
+                startTime = new Date(now - 7 * 24 * 60 * 60 * 1000);
+                break;
+            case 'month':
+                startTime = new Date(now - 30 * 24 * 60 * 60 * 1000);
+                break;
+            default:
+                startTime = new Date(now - 24 * 60 * 60 * 1000);
+        }
+
+        const filteredViews = pageViews.filter(view =>
+            new Date(view.timestamp) >= startTime
+        );
+
+        const filteredVisitors = visitors.filter(visitor =>
+            new Date(visitor.timestamp) >= startTime
+        );
+
+        // Группировка по часам для графика
+        const hourlyData = {};
+        filteredViews.forEach(view => {
+            const hour = new Date(view.timestamp).getHours();
+            if (!hourlyData[hour]) {
+                hourlyData[hour] = 0;
+            }
+            hourlyData[hour]++;
+        });
+
+        return {
+            period,
+            totalViews: filteredViews.length,
+            totalVisitors: filteredVisitors.length,
+            hourlyData,
+            uniqueSessions: new Set(filteredViews.map(v => v.sessionId)).size
+        };
+    },
+
+    // Получить подробную статистику
+    getDetailedStats() {
+        const pageViews = this.getPageViews();
+        const productViews = this.getProductViews();
+        const buttonClicks = this.getButtonClicks();
+        const visitors = this.getData(this.KEYS.VISITORS) || [];
+        const orders = this.getOrders();
+
+        // Уникальные посетители
+        const uniqueSessions = new Set(visitors.map(v => v.sessionId)).size;
+
+        // Конверсия
+        const conversionRate = uniqueSessions > 0
+            ? ((orders.length / uniqueSessions) * 100).toFixed(2)
+            : 0;
+
+        // Самая популярная страница
+        const pageStats = {};
+        pageViews.forEach(view => {
+            if (!pageStats[view.pageName]) {
+                pageStats[view.pageName] = 0;
+            }
+            pageStats[view.pageName]++;
+        });
+        const mostViewedPage = Object.entries(pageStats)
+            .sort((a, b) => b[1] - a[1])[0];
+
+        // Активность по часам
+        const activityByHour = Array(24).fill(0);
+        [...pageViews, ...buttonClicks].forEach(item => {
+            const hour = new Date(item.timestamp).getHours();
+            activityByHour[hour]++;
+        });
+
+        return {
+            totalPageViews: pageViews.length,
+            totalProductViews: productViews.length,
+            totalButtonClicks: buttonClicks.length,
+            totalVisitors: visitors.length,
+            uniqueSessions,
+            totalOrders: orders.length,
+            conversionRate: conversionRate + '%',
+            mostViewedPage: mostViewedPage ? { name: mostViewedPage[0], views: mostViewedPage[1] } : null,
+            popularProducts: this.getPopularProducts(5),
+            topButtons: this.getButtonClicksStats().slice(0, 5),
+            activityByHour,
+            timeBasedStats: {
+                last24h: this.getTimeBasedStats('day'),
+                last7d: this.getTimeBasedStats('week')
+            }
+        };
     },
 
     // ==========================================

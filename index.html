@@ -428,6 +428,21 @@
     </style>
   </head>
   <body>
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/996556525111" class="floating-whatsapp" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+      </svg>
+      <span class="tooltip">Напишите нам!</span>
+    </a>
+
+    <!-- Scroll to Top Button -->
+    <div class="scroll-to-top" id="scrollToTop">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+      </svg>
+    </div>
+
     <!-- Декоративные анкеты -->
     <div id="optFormBackdrop" class="opt-modal-backdrop" aria-hidden="true">
       <div class="opt-modal" role="dialog" aria-labelledby="optFormTitle">
@@ -597,6 +612,52 @@
           Оригинальная продукция от ведущих мировых брендов 💎
         </p>
         <div class="hours">Открыты ежедневно: 10:00 - 17:00</div>
+      </section>
+
+      <!-- Marquee Banner -->
+      <div class="marquee-container">
+        <div class="marquee-content">
+          <span class="marquee-item">💄 Премиум косметика от мировых брендов</span>
+          <span class="marquee-item">🚚 Бесплатная доставка от 3000 сом</span>
+          <span class="marquee-item">✨ Подарок при покупке от 5000 сом</span>
+          <span class="marquee-item">🌸 Оригинальная продукция с сертификатами</span>
+          <span class="marquee-item">💄 Премиум косметика от мировых брендов</span>
+          <span class="marquee-item">🚚 Бесплатная доставка от 3000 сом</span>
+          <span class="marquee-item">✨ Подарок при покупке от 5000 сом</span>
+          <span class="marquee-item">🌸 Оригинальная продукция с сертификатами</span>
+        </div>
+      </div>
+
+      <!-- Новинки сезона -->
+      <section class="new-arrivals">
+        <div class="new-arrivals-header">
+          <span class="new-arrivals-badge">NEW IN</span>
+          <h3 class="new-arrivals-title">Новинки сезона</h3>
+          <p class="new-arrivals-subtitle">Свежие поступления из Кореи и Японии</p>
+        </div>
+        <div class="new-arrivals-grid">
+          <div class="arrival-card">
+            <div class="arrival-icon">🧴</div>
+            <div class="arrival-tag">Хит</div>
+            <h4 class="arrival-name">Сыворотки с ретинолом</h4>
+            <p class="arrival-desc">Обновление и омоложение кожи с корейскими формулами нового поколения</p>
+          </div>
+          <div class="arrival-card">
+            <div class="arrival-icon">☀️</div>
+            <div class="arrival-tag">Тренд</div>
+            <h4 class="arrival-name">SPF-кремы нового формата</h4>
+            <p class="arrival-desc">Лёгкие солнцезащитные средства без белого налёта и липкости</p>
+          </div>
+          <div class="arrival-card">
+            <div class="arrival-icon">💋</div>
+            <div class="arrival-tag">Новинка</div>
+            <h4 class="arrival-name">Тинты и бальзамы для губ</h4>
+            <p class="arrival-desc">Стойкие оттенки с увлажняющим уходом на каждый день</p>
+          </div>
+        </div>
+        <div class="new-arrivals-cta">
+          <a href="https://wa.me/996556525111" class="arrivals-cta-btn" target="_blank" rel="noopener noreferrer">Узнать подробнее</a>
+        </div>
       </section>
 
       <!-- Кнопка анкеты -->
@@ -872,6 +933,119 @@
         <div class="slider-dots" id="sliderDots"></div>
       </section>
 
+      <!-- Stats Section -->
+      <section class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number" data-target="5000">5000+</div>
+            <div class="stat-label">Довольных клиентов</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="500">500+</div>
+            <div class="stat-label">Товаров в каталоге</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="50">50+</div>
+            <div class="stat-label">Брендов косметики</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="7">7</div>
+            <div class="stat-label">Лет на рынке</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Choose Us Section -->
+      <section class="why-us-section">
+        <h2 class="why-us-title">Почему выбирают нас</h2>
+        <p class="why-us-subtitle">Мы заботимся о вашей красоте и удобстве</p>
+        <div class="why-us-grid">
+          <div class="why-us-card">
+            <span class="why-us-icon">✨</span>
+            <h3 class="why-us-card-title">100% Оригинал</h3>
+            <p class="why-us-card-text">Только оригинальная продукция напрямую от официальных дистрибьюторов</p>
+          </div>
+          <div class="why-us-card">
+            <span class="why-us-icon">🚚</span>
+            <h3 class="why-us-card-title">Быстрая доставка</h3>
+            <p class="why-us-card-text">Доставка по Бишкеку за 2 часа. По всему Кыргызстану за 1-3 дня</p>
+          </div>
+          <div class="why-us-card">
+            <span class="why-us-icon">🧪</span>
+            <h3 class="why-us-card-title">Широкий выбор</h3>
+            <p class="why-us-card-text">Более 500 товаров от 50+ мировых брендов: уход, макияж, парфюмерия</p>
+          </div>
+          <div class="why-us-card">
+            <span class="why-us-icon">💬</span>
+            <h3 class="why-us-card-title">Консультация</h3>
+            <p class="why-us-card-text">Бесплатная консультация косметолога для подбора идеальных средств</p>
+          </div>
+          <div class="why-us-card">
+            <span class="why-us-icon">🎁</span>
+            <h3 class="why-us-card-title">Подарки</h3>
+            <p class="why-us-card-text">Пробники и подарки к каждому заказу. Бонусная программа для постоянных клиентов</p>
+          </div>
+          <div class="why-us-card">
+            <span class="why-us-icon">🔄</span>
+            <h3 class="why-us-card-title">Гарантия возврата</h3>
+            <p class="why-us-card-text">Возврат товара в течение 14 дней, если продукт вам не подошёл</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="testimonials-section">
+        <h2 class="testimonials-title">Отзывы наших клиентов</h2>
+        <p class="testimonials-subtitle">Более 5000 довольных покупателей по всему Кыргызстану</p>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">А</div>
+              <div class="testimonial-info">
+                <h4>Айгуль К.</h4>
+                <span>Бишкек</span>
+              </div>
+            </div>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Заказываю здесь уже год! Всегда оригинальная продукция, быстрая доставка и очень приятные цены. Девочки-консультанты всегда помогут с выбором!"</p>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">Н</div>
+              <div class="testimonial-info">
+                <h4>Нургуль М.</h4>
+                <span>Ош</span>
+              </div>
+            </div>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Лучший магазин корейской косметики! Заказала сыворотку K-SECRET - эффект потрясающий! Кожа стала намного лучше уже через неделю."</p>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">С</div>
+              <div class="testimonial-info">
+                <h4>Салтанат Б.</h4>
+                <span>Каракол</span>
+              </div>
+            </div>
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"Беру косметику оптом для своего салона. Качество супер, цены радуют, доставка до регионов работает отлично. Рекомендую всем мастерам!"</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Instagram Feed Preview -->
+      <section class="instagram-feed">
+        <h3 class="instagram-title">Следите за нами в Instagram</h3>
+        <p class="instagram-handle">@opt_stock_</p>
+        <div class="instagram-grid">
+          <div class="instagram-item">💄</div>
+          <div class="instagram-item">🧴</div>
+          <div class="instagram-item">✨</div>
+          <div class="instagram-item">🌸</div>
+        </div>
+      </section>
+
       <!-- Социальные сети -->
       <section class="social-section">
         <h3 class="social-title">Мы в социальных сетях</h3>
@@ -1133,6 +1307,89 @@
           window.open(url, "_blank");
           closeModal();
         });
+      })();
+    </script>
+
+
+    <!-- Scroll to Top Script -->
+    <script>
+      (function() {
+        const scrollBtn = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', function() {
+          if (window.pageYOffset > 300) {
+            scrollBtn.classList.add('visible');
+          } else {
+            scrollBtn.classList.remove('visible');
+          }
+        });
+
+        scrollBtn.addEventListener('click', function() {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        });
+      })();
+    </script>
+
+    <!-- Animated Stats Counter -->
+    <script>
+      (function() {
+        const stats = document.querySelectorAll('.stat-number');
+
+        const observerOptions = {
+          threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const target = entry.target;
+              const finalValue = target.textContent.replace(/[^0-9]/g, '');
+              let current = 0;
+              const increment = Math.ceil(finalValue / 50);
+              const suffix = target.textContent.includes('+') ? '+' : '';
+
+              const counter = setInterval(() => {
+                current += increment;
+                if (current >= finalValue) {
+                  target.textContent = finalValue + suffix;
+                  clearInterval(counter);
+                } else {
+                  target.textContent = current + suffix;
+                }
+              }, 30);
+
+              observer.unobserve(target);
+            }
+          });
+        }, observerOptions);
+
+        stats.forEach(stat => observer.observe(stat));
+      })();
+    </script>
+
+    <!-- Particle Background Effect -->
+    <script>
+      (function() {
+        // Create particles container
+        const particlesContainer = document.createElement('div');
+        particlesContainer.className = 'particles-bg';
+        document.body.insertBefore(particlesContainer, document.body.firstChild);
+
+        // Create particles
+        for (let i = 0; i < 20; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'particle';
+          particle.style.left = Math.random() * 100 + '%';
+          particle.style.animationDelay = Math.random() * 20 + 's';
+          particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+          particle.style.opacity = Math.random() * 0.5 + 0.3;
+          particle.style.width = (5 + Math.random() * 10) + 'px';
+          particle.style.height = particle.style.width;
+          particlesContainer.appendChild(particle);
+        }
       })();
     </script>
   </body>
